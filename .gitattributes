@@ -1,0 +1,32 @@
+# Use LF consistently
+* text=auto eol=lf
+
+# Unity YAML / text assets: merge as text
+*.unity text merge=unityyamlmerge eol=lf
+*.prefab text merge=unityyamlmerge eol=lf
+*.asset text merge=unityyamlmerge eol=lf
+*.mat text merge=unityyamlmerge eol=lf
+*.anim text merge=unityyamlmerge eol=lf
+*.controller text merge=unityyamlmerge eol=lf
+*.overrideController text merge=unityyamlmerge eol=lf
+*.playable text merge=unityyamlmerge eol=lf
+*.renderTexture text merge=unityyamlmerge eol=lf
+*.physicsMaterial2D text merge=unityyamlmerge eol=lf
+*.physicsMaterial text merge=unityyamlmerge eol=lf
+*.flare text merge=unityyamlmerge eol=lf
+*.mask text merge=unityyamlmerge eol=lf
+
+# Images / models / audio: treat as binary (no text diffs)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.tga binary
+*.psd binary
+*.fbx binary
+*.obj binary
+*.wav binary
+*.mp3 binary
+*.ogg binary
+*.aif binary
+*.aiff binary
+
