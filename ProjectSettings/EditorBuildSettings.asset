@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/Peguin Run Returner Menu.unity
+    path: Assets/Scenes/Penguin Run Returner Menu.unity
     guid: 73285d69e4d0b48fe9a336ae66884e34
   - enabled: 1
     path: Assets/Scenes/Penguin Test.unity
