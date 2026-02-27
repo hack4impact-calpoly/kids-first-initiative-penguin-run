@@ -1,7 +1,8 @@
 using UnityEngine;
 
-public class ballScript : MonoBehaviour
+public class PlayButtonPressed : MonoBehaviour
 {
+    
      private Rigidbody2D rb;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -11,11 +12,10 @@ public class ballScript : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    public void PlayButtonClicked()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        Debug.Log("PLAY BUTTON CLICKED"+ gameObject.name);
             rb.simulated = true;
-        }
+        
     }
 }

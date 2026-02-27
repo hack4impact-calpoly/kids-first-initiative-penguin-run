@@ -14,8 +14,9 @@ GameObject:
   - component: {fileID: 2653972548919242237}
   - component: {fileID: 7850125645171132936}
   - component: {fileID: 4081857401970425474}
+  - component: {fileID: 331696417406125016}
   m_Layer: 0
-  m_Name: ball
+  m_Name: ballStartWithSpace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -211,8 +212,20 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5275287296225758355}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b399e0113138f4543ba363f903436212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ballScript
+--- !u!114 &331696417406125016
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5275287296225758355}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6df5bef88c66508418636e03b8c0c392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayButtonPressed
