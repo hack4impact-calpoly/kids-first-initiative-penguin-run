@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 6316573625567530792}
   - component: {fileID: 6834897307046888514}
   - component: {fileID: 6819785398295973596}
-  - component: {fileID: 5833022381097762683}
+  - component: {fileID: 9007637059278687661}
   m_Layer: 0
   m_Name: CurveTrackPieceBase
   m_TagString: Untagged
@@ -91,8 +91,8 @@ Transform:
   m_GameObject: {fileID: 4417471992519571523}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.88, y: 1.41, z: 0}
-  m_LocalScale: {x: 1, y: -1, z: 1}
+  m_LocalPosition: {x: -64.8, y: -6.2, z: 0}
+  m_LocalScale: {x: 19.839497, y: -18.76814, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 52978859983374197}
@@ -162,8 +162,8 @@ SpriteShapeRenderer:
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   - {fileID: 21300000, guid: 608e61deb05c54660bebf5a4dd2ee02d, type: 3}
   m_LocalAABB:
-    m_Center: {x: -0.011302471, y: 0.44430023, z: 0}
-    m_Extent: {x: 2.0191867, y: 0.794839, z: 0}
+    m_Center: {x: 0.0029034615, y: 0.41034976, z: 0}
+    m_Extent: {x: 2.0323205, y: 0.8103803, z: 0}
   m_SpriteSortPoint: 0
 --- !u!114 &6834897307046888514
 MonoBehaviour:
@@ -188,15 +188,15 @@ MonoBehaviour:
       spriteIndex: 0
       corner: 1
       m_CornerMode: 2
-    - position: {x: 0.056950144, y: 0.85, z: 0}
-      leftTangent: {x: -0.92568946, y: 0.003089726, z: -0}
-      rightTangent: {x: 0.92568946, y: -0.003089726, z: 0}
+    - position: {x: 0.0569502, y: 0.8308629, z: 0}
+      leftTangent: {x: -0.9256896, y: 0.003089726, z: 0}
+      rightTangent: {x: 0.92568934, y: -0.0030897856, z: 0}
       mode: 2
       height: 1.5
       spriteIndex: 0
       corner: 1
       m_CornerMode: 1
-    - position: {x: 1.5586395, y: 0.09, z: 0}
+    - position: {x: 1.5857948, y: 0.027804561, z: 0}
       leftTangent: {x: 0, y: 0, z: 0}
       rightTangent: {x: 0, y: 0, z: 0}
       mode: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_WorldSpaceUV: 0
   m_CornerAngleThreshold: 30
   m_ColliderDetail: 16
-  m_ColliderOffset: 0
+  m_ColliderOffset: -0.498
   m_UpdateCollider: 1
   m_EnableTangents: 0
   m_GeometryCached: 0
@@ -225,7 +225,17 @@ MonoBehaviour:
   m_UpdateGeometry: 1
   m_Creator: {fileID: 0}
   m_Modifiers: []
-  m_ColliderSegment: []
+  m_ColliderSegment:
+  - {x: -1.4987783, y: -0.35065335}
+  - {x: -1.1368585, y: -0.011657447}
+  - {x: -0.74855655, y: 0.24047332}
+  - {x: -0.36705598, y: 0.3958267}
+  - {x: -0.08861789, y: 0.45026517}
+  - {x: 0.19523588, y: 0.44901526}
+  - {x: 0.5768126, y: 0.34512752}
+  - {x: 0.98825663, y: 0.095452204}
+  - {x: 1.2914064, y: -0.20206004}
+  - {x: 1.4452655, y: -0.39910734}
   m_ShadowSegment: []
 --- !u!114 &6819785398295973596
 MonoBehaviour:
@@ -247,8 +257,8 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   snapRotation: 0
---- !u!61 &5833022381097762683
-BoxCollider2D:
+--- !u!68 &9007637059278687661
+EdgeCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -281,15 +291,20 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.028878331, y: 0.34394148}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0, y: 0}
-    oldSize: {x: 0, y: 0}
-    newSize: {x: 0, y: 0}
-    adaptiveTilingThreshold: 0
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
-  m_Size: {x: 3.7662206, y: 1.2769539}
+  m_Offset: {x: 0, y: 0}
   m_EdgeRadius: 0
+  m_Points:
+  - {x: -1.4987783, y: -0.35065335}
+  - {x: -1.1368585, y: -0.011657447}
+  - {x: -0.74855655, y: 0.24047332}
+  - {x: -0.36705598, y: 0.3958267}
+  - {x: -0.08861789, y: 0.45026517}
+  - {x: 0.19523588, y: 0.44901526}
+  - {x: 0.5768126, y: 0.34512752}
+  - {x: 0.98825663, y: 0.095452204}
+  - {x: 1.2914064, y: -0.20206004}
+  - {x: 1.4452655, y: -0.39910734}
+  m_AdjacentStartPoint: {x: 0, y: 0}
+  m_AdjacentEndPoint: {x: 0, y: 0}
+  m_UseAdjacentStartPoint: 0
+  m_UseAdjacentEndPoint: 0
