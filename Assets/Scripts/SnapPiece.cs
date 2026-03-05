@@ -17,68 +17,52 @@ public class SnapPiece : MonoBehaviour
 
     // Call this after drag finishes (e.g. OnMouseUp / pointer up)
     public bool TrySnap()
+{
+    if (snapPoints == null || snapPoints.Length == 0) return false;
+
+    float r = EffectiveSnapRadius();
+
+    float bestDist = float.MaxValue;
+    Vector3 bestDelta = Vector3.zero;
+    Quaternion bestRotation = Quaternion.identity;
+    bool found = false;
+
+    foreach (var myPoint in snapPoints)
     {
-        if (snapPoints == null || snapPoints.Length == 0) return false;
+        Collider2D[] hits = Physics2D.OverlapCircleAll(myPoint.position, r, snapLayer);
 
-        float bestDist = float.MaxValue;
-        Vector3 bestDelta = Vector3.zero;
-        Quaternion bestRotation = Quaternion.identity;
-        bool found = false;
-
-        // search each of my snap points
-        foreach (var myPoint in snapPoints)
+        foreach (var hit in hits)
         {
-            // find colliders near this point
-            Collider2D[] hits = Physics2D.OverlapCircleAll(myPoint.position, snapRadius, snapLayer);
+            if (hit.transform.IsChildOf(transform)) continue;
 
-            foreach (var hit in hits)
+            SnapPiece other = hit.GetComponentInParent<SnapPiece>();
+            if (other == null) continue;
+
+            foreach (var otherPoint in other.snapPoints)
             {
-                // if the hit is my own collider, skip
-                if (hit.transform.IsChildOf(transform)) continue;
-
-                // find the SnapPiece on the hit object (in parent chain)
-                SnapPiece other = hit.GetComponentInParent<SnapPiece>();
-                if (other == null) continue;
-
-                // compare all of that other piece's snap points
-                foreach (var otherPoint in other.snapPoints)
+                float d = Vector2.Distance(myPoint.position, otherPoint.position);
+                if (d <= r && d < bestDist)
                 {
-                    float d = Vector2.Distance(myPoint.position, otherPoint.position);
-                    if (d <= snapRadius && d < bestDist)
-                    {
-                        bestDist = d;
-                        bestDelta = otherPoint.position - myPoint.position;
-                        found = true;
+                    bestDist = d;
+                    bestDelta = otherPoint.position - myPoint.position;
+                    found = true;
 
-                        if (snapRotation)
-                        {
-                            // We want myPoint rotation to match otherPoint rotation.
-                            // Compute the required delta rotation in world space.
-                            bestRotation = otherPoint.rotation * Quaternion.Inverse(myPoint.rotation);
-                        }
-                    }
+                    if (snapRotation)
+                        bestRotation = otherPoint.rotation * Quaternion.Inverse(myPoint.rotation);
                 }
             }
         }
-
-        if (found)
-        {
-            // Apply snapping: move the whole piece by the delta
-            transform.position += bestDelta;
-
-            if (snapRotation)
-            {
-                // Apply rotation around the piece's pivot
-                transform.rotation = bestRotation * transform.rotation;
-            }
-
-            Debug.Log($"Snapped {name} by {bestDelta} (dist {bestDist:F3})");
-            return true;
-        }
-
-        // nothing to snap to
-        return false;
     }
+
+    if (found)
+    {
+        transform.position += bestDelta;
+        if (snapRotation) transform.rotation = bestRotation * transform.rotation;
+        return true;
+    }
+
+    return false;
+}
 
     private void OnDrawGizmosSelected()
     {
@@ -87,9 +71,13 @@ public class SnapPiece : MonoBehaviour
         foreach (var p in snapPoints)
         {
             if (p == null) continue;
-            Gizmos.DrawWireSphere(p.position, snapRadius);
+            Gizmos.DrawWireSphere(p.position, EffectiveSnapRadius());
             Gizmos.DrawIcon(p.position, "sv_label_0", true); // small icon for visibility
         }
+    }
+    float EffectiveSnapRadius()
+    {
+    return snapRadius * transform.lossyScale.x;
     }
     void OnMouseUp()
     {

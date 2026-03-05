@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b54a8ebce41054c5ba6cdc4c679546fe
+guid: 71760172413421c4c9fdf57e8062cc78
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 3880706009548068839
-    second: tundraMid 1_0
+      213: -238645213108186881
+    second: tundraMid_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -96,11 +96,24 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: tundraMid 1_0
+      name: tundraMid_0
       rect:
         serializedVersion: 2
         x: 0
@@ -115,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 7e716d80e890bd530800000000000000
-      internalID: 3880706009548068839
+      spriteID: ff0d65d617920bcf0800000000000000
+      internalID: -238645213108186881
       vertices: []
       indices: 
       edges: []
@@ -135,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      tundraMid 1_0: 3880706009548068839
+      tundraMid_0: -238645213108186881
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
