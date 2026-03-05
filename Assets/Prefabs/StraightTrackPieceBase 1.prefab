@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 9136129499877933975}
   - component: {fileID: 7082930848761396929}
   m_Layer: 7
-  m_Name: StraightTrackPieceBase
+  m_Name: StraightTrackPieceBase 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
