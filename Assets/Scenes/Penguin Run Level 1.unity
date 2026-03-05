@@ -972,6 +972,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3995496955611863995, guid: f19be947369a1794ebde816399cb5a89, type: 3}
+      propertyPath: m_GravityScale
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 5275287296225758355, guid: f19be947369a1794ebde816399cb5a89, type: 3}
       propertyPath: m_Name
       value: ballStartWithSpace
