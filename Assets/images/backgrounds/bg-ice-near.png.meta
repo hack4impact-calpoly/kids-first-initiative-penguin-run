@@ -1,0 +1,598 @@
+fileFormatVersion: 2
+guid: 668bddf45f76246c69da654e8b916f55
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 1478317161059422506
+    second: bg-ice-near_0
+  - first:
+      213: 8599267257654974240
+    second: bg-ice-near_1
+  - first:
+      213: 5672018255006836894
+    second: bg-ice-near_2
+  - first:
+      213: -1393993752429949345
+    second: bg-ice-near_3
+  - first:
+      213: 8237789478825638540
+    second: bg-ice-near_4
+  - first:
+      213: -1416966551545071929
+    second: bg-ice-near_5
+  - first:
+      213: 7364161833116258811
+    second: bg-ice-near_6
+  - first:
+      213: 4531059289745214427
+    second: bg-ice-near_7
+  - first:
+      213: 65499146318191451
+    second: bg-ice-near_8
+  - first:
+      213: -8082184206097220359
+    second: bg-ice-near_9
+  - first:
+      213: 5072295010494819373
+    second: bg-ice-near_10
+  - first:
+      213: 1313973304720575946
+    second: bg-ice-near_11
+  - first:
+      213: -4163843821560921881
+    second: bg-ice-near_12
+  - first:
+      213: -5253856944829851848
+    second: bg-ice-near_13
+  - first:
+      213: -4243319759117131245
+    second: bg-ice-near_14
+  - first:
+      213: -7330910286331067781
+    second: bg-ice-near_15
+  - first:
+      213: -4584248208214443266
+    second: bg-ice-near_16
+  - first:
+      213: -7741201900459030957
+    second: bg-ice-near_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: bg-ice-near_0
+      rect:
+        serializedVersion: 2
+        x: 29
+        y: 227
+        width: 10
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a219f4220a9048410800000000000000
+      internalID: 1478317161059422506
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_1
+      rect:
+        serializedVersion: 2
+        x: 89
+        y: 233
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0271c2d820cb65770800000000000000
+      internalID: 8599267257654974240
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_2
+      rect:
+        serializedVersion: 2
+        x: 159
+        y: 223
+        width: 10
+        height: 33
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e98a6312d8e07be40800000000000000
+      internalID: 5672018255006836894
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_3
+      rect:
+        serializedVersion: 2
+        x: 239
+        y: 235
+        width: 8
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f5e8c4f511a87ace0800000000000000
+      internalID: -1393993752429949345
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_4
+      rect:
+        serializedVersion: 2
+        x: 309
+        y: 225
+        width: 10
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c8a3ad3a2e1825270800000000000000
+      internalID: 8237789478825638540
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_5
+      rect:
+        serializedVersion: 2
+        x: 379
+        y: 231
+        width: 8
+        height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c6bb84cd6ce55ce0800000000000000
+      internalID: -1416966551545071929
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_6
+      rect:
+        serializedVersion: 2
+        x: 439
+        y: 229
+        width: 10
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf152639b22c23660800000000000000
+      internalID: 7364161833116258811
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_7
+      rect:
+        serializedVersion: 2
+        x: 499
+        y: 233
+        width: 8
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bdb4f7dda6e81ee30800000000000000
+      internalID: 4531059289745214427
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_8
+      rect:
+        serializedVersion: 2
+        x: 276
+        y: 192
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5b13656023b8e000800000000000000
+      internalID: 65499146318191451
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_9
+      rect:
+        serializedVersion: 2
+        x: 46
+        y: 172
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9fc7d4a294056df80800000000000000
+      internalID: -8082184206097220359
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_10
+      rect:
+        serializedVersion: 2
+        x: 397
+        y: 153
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d2ca7881079646640800000000000000
+      internalID: 5072295010494819373
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_11
+      rect:
+        serializedVersion: 2
+        x: 147
+        y: 133
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: acd473842cb2c3210800000000000000
+      internalID: 1313973304720575946
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_12
+      rect:
+        serializedVersion: 2
+        x: 456
+        y: 102
+        width: 8
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7e008a3fa1e0736c0800000000000000
+      internalID: -4163843821560921881
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_13
+      rect:
+        serializedVersion: 2
+        x: 117
+        y: 73
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 83792bed1fc8617b0800000000000000
+      internalID: -5253856944829851848
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_14
+      rect:
+        serializedVersion: 2
+        x: 9
+        y: 0
+        width: 102
+        height: 27
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3126d614923bc15c0800000000000000
+      internalID: -4243319759117131245
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_15
+      rect:
+        serializedVersion: 2
+        x: 139
+        y: 0
+        width: 122
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b72caf67fef534a90800000000000000
+      internalID: -7330910286331067781
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_16
+      rect:
+        serializedVersion: 2
+        x: 294
+        y: 0
+        width: 112
+        height: 31
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: efa38230b8a7160c0800000000000000
+      internalID: -4584248208214443266
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: bg-ice-near_17
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 0
+        width: 78
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3568f8cd2e9b19490800000000000000
+      internalID: -7741201900459030957
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      bg-ice-near_0: 1478317161059422506
+      bg-ice-near_1: 8599267257654974240
+      bg-ice-near_10: 5072295010494819373
+      bg-ice-near_11: 1313973304720575946
+      bg-ice-near_12: -4163843821560921881
+      bg-ice-near_13: -5253856944829851848
+      bg-ice-near_14: -4243319759117131245
+      bg-ice-near_15: -7330910286331067781
+      bg-ice-near_16: -4584248208214443266
+      bg-ice-near_17: -7741201900459030957
+      bg-ice-near_2: 5672018255006836894
+      bg-ice-near_3: -1393993752429949345
+      bg-ice-near_4: 8237789478825638540
+      bg-ice-near_5: -1416966551545071929
+      bg-ice-near_6: 7364161833116258811
+      bg-ice-near_7: 4531059289745214427
+      bg-ice-near_8: 65499146318191451
+      bg-ice-near_9: -8082184206097220359
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
