@@ -33,6 +33,7 @@ public class PlayButtonPressed : MonoBehaviour
         // Debug.Log("Penguin position: " + penguinPos);
 
         // If the penguin's position is outside of the camera position
+        // cam.transform.position gets the midpoint of the camera
         if (penguin.transform.position.x > (cam.transform.position.x + camWidth / 2f) ||
             penguin.transform.position.y > (cam.transform.position.y + camHeight / 2f) ||
             penguin.transform.position.x < (cam.transform.position.x - camWidth / 2f) ||
