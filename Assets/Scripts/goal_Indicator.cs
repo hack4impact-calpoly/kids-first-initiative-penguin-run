@@ -1,12 +1,23 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class Goal : MonoBehaviour
 {
     public GameObject goalUI;
+    [SerializeField] private PlayerProgressManager playerProgressManager;
+
+    private float levelStartTime;
+
+    private void OnValidate()
+    {
+        if (playerProgressManager == null)
+            playerProgressManager = FindObjectOfType<PlayerProgressManager>();
+    }
 
     private void Start()
     {
+        levelStartTime = Time.time;
         if (goalUI != null){
             goalUI.SetActive(false);
         }    
@@ -42,5 +53,23 @@ public class Goal : MonoBehaviour
         yield return new WaitForSeconds(3f);
 
         goalUI.SetActive(false);
+    }
+
+    private void HandleLevelComplete()
+    {
+        float levelDuration = Time.time - levelStartTime;
+        string currentLevelName = SceneManager.GetActiveScene().name;
+        
+        Debug.Log($"[goal_Indicator] Level '{currentLevelName}' completed in {levelDuration:F2}s");
+        
+        if (playerProgressManager != null)
+        {
+            playerProgressManager.SaveLevelCompletion(currentLevelName, levelDuration);
+        }
+        else
+        {
+            Debug.LogError("[goal_Indicator] PlayerProgressManager not found!");
+        }
+        
     }
 }
