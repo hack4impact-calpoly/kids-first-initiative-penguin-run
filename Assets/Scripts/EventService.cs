@@ -6,7 +6,9 @@ using System;
 [RequireComponent(typeof(PlayerProgressManager))]
 public class EventService : MonoBehaviour
 {
-    [SerializeField] private PlayerProgressManagerSO config;
+    [SerializeField]
+    [Tooltip("Configuration for API endpoints and game ID")]
+    private PlayerProgressManagerSO config;
     
     private void OnValidate()
     {
@@ -65,6 +67,17 @@ public class EventService : MonoBehaviour
                 Debug.LogError($"[EventService] Failed to save: {request.error}");
             }
         }
+    }
+    
+    private void SendEventToAPI(EventData eventData)
+    {
+        if (config == null)
+        {
+            Debug.LogError("[EventService] PlayerProgressManagerSO config not assigned!");
+            return;
+        }
+
+        string url = $"{config.apiBaseUrl}/api/events";
     }
     
     [System.Serializable]

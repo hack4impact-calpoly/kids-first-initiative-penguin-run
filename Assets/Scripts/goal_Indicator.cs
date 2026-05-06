@@ -12,7 +12,7 @@ public class Goal : MonoBehaviour
     private void OnValidate()
     {
         if (playerProgressManager == null)
-            playerProgressManager = FindObjectOfType<PlayerProgressManager>();
+            playerProgressManager = FindFirstObjectByType<PlayerProgressManager>();
     }
 
     private void Start()
@@ -20,7 +20,11 @@ public class Goal : MonoBehaviour
         levelStartTime = Time.time;
         if (goalUI != null){
             goalUI.SetActive(false);
-        }    
+        }
+        
+        // Find PlayerProgressManager at runtime if not assigned in Inspector
+        if (playerProgressManager == null)
+            playerProgressManager = FindFirstObjectByType<PlayerProgressManager>();
     }
 
     private void ShowGoalUI()

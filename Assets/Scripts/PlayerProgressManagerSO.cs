@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "Configs/Player Progress Manager")]
+[CreateAssetMenu(fileName = "PlayerProgressManagerSO", menuName = "Scriptable Objects/PlayerProgressManagerSO")]
 public class PlayerProgressManagerSO : ScriptableObject
 {
     [Header("API Configuration")]
