@@ -7,5 +7,5 @@ public class PlayerProgressManagerSO : ScriptableObject
     public string apiBaseUrl = "http://localhost:3000";
     
     [Header("Game Configuration")]
-    public string gameId = "penguin-run";
+    public string gameId = "penguinRunGame";
 }
