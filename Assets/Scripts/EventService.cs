@@ -3,7 +3,6 @@ using System.Collections;
 using UnityEngine.Networking;
 using System;
 
-[RequireComponent(typeof(PlayerProgressManager))]
 public class EventService : MonoBehaviour
 {
     [SerializeField]
@@ -41,6 +40,7 @@ public class EventService : MonoBehaviour
             props = new EventProps
             {
                 gameId = config.gameId,
+                levelId = levelId,  // ADD THIS LINE
                 durationMs = durationMs,
                 result = "success"
             }
@@ -49,8 +49,12 @@ public class EventService : MonoBehaviour
         string jsonBody = JsonUtility.ToJson(eventData);
         string url = $"{config.apiBaseUrl}/api/events";
         
+        #if UNITY_EDITOR || DEVELOPMENT_BUILD
         Debug.Log($"[EventService] Posting to URL: {url}");
         Debug.Log($"[EventService] Posting level completion: {jsonBody}");
+        #else
+        Debug.Log($"[EventService] Posting level completion event");
+        #endif
         
         using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
@@ -73,17 +77,6 @@ public class EventService : MonoBehaviour
         }
     }
     
-    private void SendEventToAPI(EventData eventData)
-    {
-        if (config == null)
-        {
-            Debug.LogError("[EventService] PlayerProgressManagerSO config not assigned!");
-            return;
-        }
-
-        string url = $"{config.apiBaseUrl}/api/events";
-    }
-    
     [System.Serializable]
     public class EventData
     {
@@ -99,6 +92,7 @@ public class EventService : MonoBehaviour
     public class EventProps
     {
         public string gameId;
+        public string levelId;  // ADD THIS
         public int durationMs;
         public string result;
     }

@@ -83,29 +83,32 @@
 
 ## **Setup Instructions**
 
-1. **Create folder:** `Assets/Scripts/Configs`
+1. **Create asset location:**
+   ```
+   Assets/Resources/Configs/
+   ```
+   (Create `Resources` and `Configs` folders if they don't exist)
 
-2. **Files created/updated:**
-   - ✅ `Assets/Scripts/EventService.cs` (new)
-   - ✅ `Assets/Scripts/PlayerProgressManagerSO.cs` (new)
-   - ✅ `Assets/Scripts/PlayerProgressManager.cs` (refactored)
-   - ✅ `Assets/Scripts/goal_Indicator.cs` (updated)
+2. **Create the config asset:**
+   - Right-click `Assets/Resources/Configs/` 
+   - **Create → ScriptableObjects → PlayerProgressManager**
+   - Name it: `PlayerProgressManager.asset`
+   - In Inspector, set:
+     - `apiBaseUrl`: `http://localhost:3000` (or your backend)
+     - `gameId`: `penguinRunGame` (must match backend)
 
-3. **Create ScriptableObject:**
-   - Right-click in Project → Create → Configs → Player Progress Manager
-   - Name it: `PlayerProgressManagerConfig`
-   - Set `apiBaseUrl` to your backend URL (default: `http://localhost:3000`)
-
-4. **Scene Setup:**
-   - Create empty GameObject named "PlayerProgressManager"
-   - Attach `PlayerProgressManager.cs` script
+3. **Scene setup:**
+   - Create empty GameObject: `PlayerProgressManager`
+   - Attach `PlayerProgressManager.cs` component
+   - Attach `EventService.cs` component
+   - Assign the config asset to `EventService`'s `config` field
    - Make it a Prefab for reuse
-   - Assign `PlayerProgressManagerConfig` to `EventService` component
    - Add to first scene only (persists with `DontDestroyOnLoad()`)
 
-5. **Goal Indicator Setup:**
-   - In Inspector, drag `PlayerProgressManager` GameObject into the field
-   - Ensure player has "Player" tag for collision detection
+4. **Verify:**
+   - No compiler errors
+   - EventService has config assigned
+   - Backend `/api/events` endpoint running at `apiBaseUrl`
 
 ---
 

@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class Goal : MonoBehaviour
+public class goal_Indicator : MonoBehaviour
 {
     public GameObject goalUI;
     [SerializeField] private PlayerProgressManager playerProgressManager;
@@ -54,10 +54,14 @@ public class Goal : MonoBehaviour
 
     private IEnumerator ShowAndHide()
     {
-        goalUI.SetActive(true);
-
+        if (goalUI == null)
+        {
+            Debug.LogError("[goal_Indicator] Goal UI not assigned!");
+            yield break;
+        }
+        
+        ShowGoalUI();
         yield return new WaitForSeconds(3f);
-
         goalUI.SetActive(false);
     }
 
