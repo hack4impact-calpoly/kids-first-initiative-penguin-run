@@ -47,9 +47,12 @@ public class EventService : MonoBehaviour
         };
         
         string jsonBody = JsonUtility.ToJson(eventData);
+        string url = $"{config.apiBaseUrl}/api/events";
+        
+        Debug.Log($"[EventService] Posting to URL: {url}");
         Debug.Log($"[EventService] Posting level completion: {jsonBody}");
         
-        using (UnityWebRequest request = new UnityWebRequest($"{config.apiBaseUrl}/api/events", "POST"))
+        using (UnityWebRequest request = new UnityWebRequest(url, "POST"))
         {
             byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(jsonBody);
             request.uploadHandler = new UploadHandlerRaw(bodyRaw);
@@ -64,7 +67,8 @@ public class EventService : MonoBehaviour
             }
             else
             {
-                Debug.LogError($"[EventService] Failed to save: {request.error}");
+                Debug.LogError($"[EventService] Failed to save: HTTP {request.responseCode} - {request.error}");
+                Debug.LogError($"[EventService] Response: {request.downloadHandler.text}");
             }
         }
     }

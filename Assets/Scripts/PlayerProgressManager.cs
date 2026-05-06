@@ -72,11 +72,14 @@ public class PlayerProgressManager : MonoBehaviour
     /// <summary>
     /// Set the session ID (call from authentication/web backend)
     /// </summary>
-    public void SetSessionId(string newSessionId)
+    public static void SetSessionId(string newSessionId)
     {
-        sessionId = newSessionId;
         PlayerPrefs.SetString("sessionId", newSessionId);
         Debug.Log($"[PlayerProgressManager] Session ID set: {newSessionId}");
+        
+        // Update instance if it exists
+        if (instance != null)
+            instance.sessionId = newSessionId;
     }
     
     /// <summary>
