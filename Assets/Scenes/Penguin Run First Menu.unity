@@ -832,37 +832,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cfd1b01005c04e4db090eceba8eb22a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SceneLoader
---- !u!1 &747672005
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 747672006}
-  m_Layer: 0
-  m_Name: GameObject
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &747672006
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 747672005}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &792446123
 GameObject:
   m_ObjectHideFlags: 0
@@ -2065,7 +2034,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f33742a1c5b8c47ffa6188ba0c2a2df2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EventService
-  config: {fileID: 11400000, guid: bfabf4d8f69364171a5db2727a654816, type: 2}
+  config: {fileID: 11400000, guid: 945c0f793b78a4040b3aac0ad6bf4e02, type: 2}
 --- !u!4 &2128064411
 Transform:
   m_ObjectHideFlags: 0
@@ -2089,4 +2058,3 @@ SceneRoots:
   - {fileID: 1794084617}
   - {fileID: 792446126}
   - {fileID: 2128064411}
-  - {fileID: 747672006}
