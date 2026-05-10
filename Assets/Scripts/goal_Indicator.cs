@@ -72,6 +72,7 @@ public class goal_Indicator : MonoBehaviour
         
         Debug.Log($"[goal_Indicator] Level '{currentLevelName}' completed in {levelDuration:F2}s");
         
+        // Save to backend (K1-57)
         if (playerProgressManager != null)
         {
             playerProgressManager.SaveLevelCompletion(currentLevelName, levelDuration);
@@ -81,5 +82,27 @@ public class goal_Indicator : MonoBehaviour
             Debug.LogError("[goal_Indicator] PlayerProgressManager not found!");
         }
         
+        // Update local progress & unlock next level
+        int levelNumber = ExtractLevelNumber(currentLevelName);
+        if (levelNumber > 0)
+        {
+            LevelProgressManager levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
+            if (levelProgressManager != null)
+            {
+                levelProgressManager.MarkLevelComplete(levelNumber);
+            }
+            else
+            {
+                Debug.LogWarning("[goal_Indicator] LevelProgressManager not found. Local progress not saved.");
+            }
+        }
+    }
+    
+    private int ExtractLevelNumber(string sceneName)
+    {
+        var match = System.Text.RegularExpressions.Regex.Match(sceneName, @"\d+");
+        if (match.Success && int.TryParse(match.Value, out int levelNumber))
+            return levelNumber;
+        return -1;
     }
 }
