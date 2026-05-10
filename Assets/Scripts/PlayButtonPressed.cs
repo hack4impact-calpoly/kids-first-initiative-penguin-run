@@ -11,8 +11,15 @@ public class PlayButtonPressed : MonoBehaviour
     public Rigidbody2D penguinRb;
     public GameObject penguin;
 
-    void Start()
+    private void Start()
     {
+        // Session ID should be set by web backend/authentication before game loads
+        string sessionId = PlayerPrefs.GetString("sessionId", "");
+        if (string.IsNullOrEmpty(sessionId))
+        {
+            Debug.LogWarning("[PlayButtonPressed] Session ID not set. Game events won't be saved.");
+        }
+
         penguin = GameObject.FindGameObjectWithTag("Player");
         penguinRb = penguin.GetComponent<Rigidbody2D>();
 
@@ -27,7 +34,7 @@ public class PlayButtonPressed : MonoBehaviour
     }
 
     void Update()
-    {   
+    {
         // These lines are to debug
         // Vector3 penguinPos = penguin.transform.position;
         // Debug.Log("Penguin position: " + penguinPos);
