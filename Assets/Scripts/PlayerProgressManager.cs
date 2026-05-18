@@ -38,6 +38,11 @@ public class PlayerProgressManager : MonoBehaviour
         SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        levelStartTime = Time.time;
+    }
+    
     private void OnValidate()
     {
         if (GetComponent<EventService>() == null)
@@ -67,12 +72,6 @@ public class PlayerProgressManager : MonoBehaviour
         {
             Debug.LogWarning("[PlayerProgressManager] Session ID not set. Call SetSessionId() before saving progress.");
         }
-    }
-    
-    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
-    {
-        levelStartTime = Time.time;
-        Debug.Log($"[PlayerProgressManager] Scene loaded: {scene.name}, timer reset");
     }
     
     private void HandleLevelComplete(int levelNumber)

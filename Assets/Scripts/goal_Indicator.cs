@@ -20,20 +20,6 @@ public class goal_Indicator : MonoBehaviour
             levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
     }
 
-    private void Awake()
-    {
-        if (levelProgressManager == null)
-        {
-            levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
-            if (levelProgressManager == null)
-            {
-                Debug.LogWarning("[goal_Indicator] LevelProgressManager not found in scene. Creating one in Awake...");
-                GameObject lpmGO = new GameObject("LevelProgressManager");
-                levelProgressManager = lpmGO.AddComponent<LevelProgressManager>();
-            }
-        }
-    }
-
     private void Start()
     {
         levelStartTime = Time.time;
@@ -42,14 +28,13 @@ public class goal_Indicator : MonoBehaviour
         }
         
         if (levelProgressManager == null)
-        {
             levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
-            if (levelProgressManager == null)
-            {
-                Debug.LogWarning("[goal_Indicator] LevelProgressManager not found in scene");
-                GameObject lpmGO = new GameObject("LevelProgressManager");
-                levelProgressManager = lpmGO.AddComponent<LevelProgressManager>();
-            }
+        
+        if (levelProgressManager == null)
+        {
+            GameObject lpmObj = new GameObject("LevelProgressManager");
+            levelProgressManager = lpmObj.AddComponent<LevelProgressManager>();
+            Debug.LogWarning("[goal_Indicator] LevelProgressManager not found in scene — created one at runtime.");
         }
     }
 
@@ -114,7 +99,7 @@ public class goal_Indicator : MonoBehaviour
         
         if (levelProgressManager == null)
         {
-            Debug.LogError("[goal_Indicator] LevelProgressManager is null and could not be created. Level completion event will not be sent!");
+            Debug.LogError("[goal_Indicator] LevelProgressManager not assigned!");
             return;
         }
         
