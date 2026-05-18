@@ -96,7 +96,7 @@ public class LevelProgressManager : MonoBehaviour
         return 0;
     }
     
-    public static System.Action<int> OnLevelComplete;
+    public static event System.Action<int> OnLevelComplete;
     
     // ============ PRIVATE HELPER METHODS ============
     
