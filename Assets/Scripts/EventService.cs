@@ -9,12 +9,6 @@ public class EventService : MonoBehaviour
     [Tooltip("Configuration for API endpoints and game ID")]
     private PlayerProgressManagerSO config;
     
-    private void OnValidate()
-    {
-        if (config == null)
-            config = Resources.Load<PlayerProgressManagerSO>("Configs/PlayerProgressManager");
-    }
-    
     private void Awake()
     {
         if (config == null)
@@ -46,7 +40,7 @@ public class EventService : MonoBehaviour
             props = new EventProps
             {
                 gameId = config.gameId,
-                levelId = levelId, 
+                levelId = levelId,
                 durationMs = durationMs,
                 result = "success"
             }
@@ -98,7 +92,7 @@ public class EventService : MonoBehaviour
     public class EventProps
     {
         public string gameId;
-        public string levelId;  // ADD THIS
+        public string levelId;
         public int durationMs;
         public string result;
     }
