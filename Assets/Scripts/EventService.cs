@@ -15,6 +15,12 @@ public class EventService : MonoBehaviour
             config = Resources.Load<PlayerProgressManagerSO>("Configs/PlayerProgressManager");
     }
     
+    private void Awake()
+    {
+        if (config == null)
+            config = Resources.Load<PlayerProgressManagerSO>("Configs/PlayerProgressManager");
+    }
+    
     public void SendLevelCompletionEvent(string anonUserId, string sessionId, string levelId, int durationMs)
     {
         if (config == null)
@@ -40,7 +46,7 @@ public class EventService : MonoBehaviour
             props = new EventProps
             {
                 gameId = config.gameId,
-                levelId = levelId,  // ADD THIS LINE
+                levelId = levelId, 
                 durationMs = durationMs,
                 result = "success"
             }

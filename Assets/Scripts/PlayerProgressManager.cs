@@ -29,11 +29,13 @@ public class PlayerProgressManager : MonoBehaviour
     private void OnEnable()
     {
         LevelProgressManager.OnLevelComplete += HandleLevelComplete;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     private void OnDisable()
     {
         LevelProgressManager.OnLevelComplete -= HandleLevelComplete;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
     
     private void OnValidate()
@@ -65,6 +67,12 @@ public class PlayerProgressManager : MonoBehaviour
         {
             Debug.LogWarning("[PlayerProgressManager] Session ID not set. Call SetSessionId() before saving progress.");
         }
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        levelStartTime = Time.time;
+        Debug.Log($"[PlayerProgressManager] Scene loaded: {scene.name}, timer reset");
     }
     
     private void HandleLevelComplete(int levelNumber)

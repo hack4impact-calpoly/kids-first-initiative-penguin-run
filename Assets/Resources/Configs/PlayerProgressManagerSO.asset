@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: PlayerProgressManagerSO
   m_EditorClassIdentifier: Assembly-CSharp::PlayerProgressManagerSO
   apiBaseUrl: http://localhost:3000
-  gameId: penguin-run
+  gameId: penguinRunGame
