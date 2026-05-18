@@ -29,12 +29,6 @@ public class Goal : MonoBehaviour
 
     }
 
-    private void OnMouseDown()
-    {
-        // Click the igloo in Play Mode to test to see if Congrats works
-        StartCoroutine(ShowAndHide());
-    }
-
     private IEnumerator ShowAndHide()
     {
         goalUI.SetActive(true);
