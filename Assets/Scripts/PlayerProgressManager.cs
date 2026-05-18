@@ -29,11 +29,18 @@ public class PlayerProgressManager : MonoBehaviour
     private void OnEnable()
     {
         LevelProgressManager.OnLevelComplete += HandleLevelComplete;
+        SceneManager.sceneLoaded += OnSceneLoaded;
     }
     
     private void OnDisable()
     {
         LevelProgressManager.OnLevelComplete -= HandleLevelComplete;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        levelStartTime = Time.time;
     }
     
     private void OnValidate()

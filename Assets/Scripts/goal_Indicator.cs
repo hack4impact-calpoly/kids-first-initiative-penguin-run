@@ -29,6 +29,13 @@ public class goal_Indicator : MonoBehaviour
         
         if (levelProgressManager == null)
             levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
+        
+        if (levelProgressManager == null)
+        {
+            GameObject lpmObj = new GameObject("LevelProgressManager");
+            levelProgressManager = lpmObj.AddComponent<LevelProgressManager>();
+            Debug.LogWarning("[goal_Indicator] LevelProgressManager not found in scene — created one at runtime.");
+        }
     }
 
     private void ShowGoalUI()
