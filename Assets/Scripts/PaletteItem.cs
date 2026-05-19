@@ -11,6 +11,9 @@ public class PaletteItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData eventData)
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         if (worldCamera == null) worldCamera = Camera.main;
 
         Vector3 p = new Vector3(eventData.position.x, eventData.position.y, -worldCamera.transform.position.z);

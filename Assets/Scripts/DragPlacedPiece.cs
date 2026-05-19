@@ -12,12 +12,19 @@ public class DragPlacedPiece : MonoBehaviour
 
     void Awake()
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
+        
         col = GetComponent<Collider2D>();
         if (worldCamera == null) worldCamera = Camera.main;
     }
 
     public void BeginDrag(PointerEventData eventData)
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         if (col) col.enabled = false;
 
         Vector3 mouseWorld = ScreenToWorld(eventData.position);
@@ -30,12 +37,18 @@ public class DragPlacedPiece : MonoBehaviour
 
     public void Drag(PointerEventData eventData)
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         Vector3 mouseWorld = ScreenToWorld(eventData.position);
         transform.position = mouseWorld + offset;
     }
 
     public void EndDrag(PointerEventData eventData)
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         if (col) col.enabled = true;
 
         if (snapOnRelease)

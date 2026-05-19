@@ -34,6 +34,9 @@ public class PlayButtonPressed : MonoBehaviour
 
         // If the penguin's position is outside of the camera position
         // cam.transform.position gets the midpoint of the camera
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         if (penguin.transform.position.x > (cam.transform.position.x + camWidth / 2f) ||
             penguin.transform.position.y > (cam.transform.position.y + camHeight / 2f) ||
             penguin.transform.position.x < (cam.transform.position.x - camWidth / 2f) ||
@@ -45,6 +48,9 @@ public class PlayButtonPressed : MonoBehaviour
 
     public void PlayButtonClicked()
     {
+        if (DialogueManager.IsDialogueOpen){
+            return;
+        }
         penguinRb.simulated = true;
     }
 }
