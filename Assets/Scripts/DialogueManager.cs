@@ -16,7 +16,7 @@ public class DialogueManager: MonoBehaviour
 {
     new string[] 
       { 
-        "Use the space key on your keyboard to go through the tutorial!",
+        "Use the right arrow on your keyboard to go through the tutorial!",
         "Help me get back to my igloo! Build a track of solid pieces and I will slide down it!!", 
         "Drag a track piece from the box at the bottom. Snap pieces together to make a path."
       },
@@ -39,7 +39,7 @@ public class DialogueManager: MonoBehaviour
   }
   private void Update()
   {
-    if (dialogueBox.activeSelf && Input.GetKeyDown(KeyCode.Space))
+    if (dialogueBox.activeSelf && Input.GetKeyDown(KeyCode.RightArrow))
     {
       NextMessage();
     }
