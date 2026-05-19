@@ -4,15 +4,20 @@ using System.Collections;
 
 public class goal_Indicator : MonoBehaviour
 {
+    [SerializeField]
+    [Tooltip("UI panel to show when goal is reached")]
     public GameObject goalUI;
-    [SerializeField] private PlayerProgressManager playerProgressManager;
+    
+    [SerializeField]
+    [Tooltip("Reference to LevelProgressManager for local progress tracking")]
+    private LevelProgressManager levelProgressManager;
 
     private float levelStartTime;
 
     private void OnValidate()
     {
-        if (playerProgressManager == null)
-            playerProgressManager = FindFirstObjectByType<PlayerProgressManager>();
+        if (levelProgressManager == null)
+            levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
     }
 
     private void Start()
@@ -22,9 +27,15 @@ public class goal_Indicator : MonoBehaviour
             goalUI.SetActive(false);
         }
         
-        // Find PlayerProgressManager at runtime if not assigned in Inspector
-        if (playerProgressManager == null)
-            playerProgressManager = FindFirstObjectByType<PlayerProgressManager>();
+        if (levelProgressManager == null)
+            levelProgressManager = FindFirstObjectByType<LevelProgressManager>();
+        
+        if (levelProgressManager == null)
+        {
+            GameObject lpmObj = new GameObject("LevelProgressManager");
+            levelProgressManager = lpmObj.AddComponent<LevelProgressManager>();
+            Debug.LogWarning("[goal_Indicator] LevelProgressManager not found in scene — created one at runtime.");
+        }
     }
 
     private void ShowGoalUI()
@@ -40,10 +51,6 @@ public class goal_Indicator : MonoBehaviour
             HandleLevelComplete();
             StartCoroutine(ShowAndHide());
         }
-
-        // I was thinking we can do like a time delay as done in ShowAndHide
-        // And then move to the next level
-        // SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     private IEnumerator ShowAndHide()
@@ -57,6 +64,24 @@ public class goal_Indicator : MonoBehaviour
         ShowGoalUI();
         yield return new WaitForSeconds(3f);
         goalUI.SetActive(false);
+        
+        LoadNextLevel();
+    }
+    
+    private void LoadNextLevel()
+    {
+        int nextSceneIndex = SceneManager.GetActiveScene().buildIndex + 1;
+        int sceneCount = SceneManager.sceneCountInBuildSettings;
+        
+        if (nextSceneIndex < sceneCount)
+        {
+            Debug.Log($"[goal_Indicator] Loading next level (scene index {nextSceneIndex})");
+            SceneManager.LoadScene(nextSceneIndex);
+        }
+        else
+        {
+            Debug.Log("[goal_Indicator] No more levels. Game complete!");
+        }
     }
 
     private void HandleLevelComplete()
@@ -66,14 +91,24 @@ public class goal_Indicator : MonoBehaviour
         
         Debug.Log($"[goal_Indicator] Level '{currentLevelName}' completed in {levelDuration:F2}s");
         
-        if (playerProgressManager != null)
+        if (levelProgressManager == null)
         {
-            playerProgressManager.SaveLevelCompletion(currentLevelName, levelDuration);
-        }
-        else
-        {
-            Debug.LogError("[goal_Indicator] PlayerProgressManager not found!");
+            Debug.LogError("[goal_Indicator] LevelProgressManager not assigned!");
+            return;
         }
         
+        int levelNumber = ExtractLevelNumber(currentLevelName);
+        if (levelNumber > 0)
+        {
+            levelProgressManager.MarkLevelComplete(levelNumber);
+        }
+    }
+    
+    private int ExtractLevelNumber(string sceneName)
+    {
+        var match = System.Text.RegularExpressions.Regex.Match(sceneName, @"\d+");
+        if (match.Success && int.TryParse(match.Value, out int levelNumber))
+            return levelNumber;
+        return -1;
     }
 }

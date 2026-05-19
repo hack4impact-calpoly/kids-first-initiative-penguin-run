@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System;
 
 [RequireComponent(typeof(EventService))]
@@ -9,6 +10,7 @@ public class PlayerProgressManager : MonoBehaviour
     private string anonUserId;
     private string sessionId;
     private EventService eventService;
+    private float levelStartTime;
     
     void Awake()
     {
@@ -24,6 +26,23 @@ public class PlayerProgressManager : MonoBehaviour
         }
     }
     
+    private void OnEnable()
+    {
+        LevelProgressManager.OnLevelComplete += HandleLevelComplete;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+    
+    private void OnDisable()
+    {
+        LevelProgressManager.OnLevelComplete -= HandleLevelComplete;
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+    
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        levelStartTime = Time.time;
+    }
+    
     private void OnValidate()
     {
         if (GetComponent<EventService>() == null)
@@ -33,6 +52,7 @@ public class PlayerProgressManager : MonoBehaviour
     private void InitializePlayer()
     {
         eventService = GetComponent<EventService>();
+        levelStartTime = Time.time;
         
         // Generate or retrieve anonymous user ID
         if (!PlayerPrefs.HasKey("anonUserId"))
@@ -54,9 +74,16 @@ public class PlayerProgressManager : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Call this when a level is completed. Triggers event save.
-    /// </summary>
+    private void HandleLevelComplete(int levelNumber)
+    {
+        float levelDuration = Time.time - levelStartTime;
+        string currentLevelName = SceneManager.GetActiveScene().name;
+        
+        SaveLevelCompletion(currentLevelName, levelDuration);
+        
+        Debug.Log($"[PlayerProgressManager] Level {levelNumber} event sent to backend");
+    }
+    
     public void SaveLevelCompletion(string levelId, float durationSeconds)
     {
         if (string.IsNullOrEmpty(sessionId))
@@ -69,9 +96,6 @@ public class PlayerProgressManager : MonoBehaviour
         eventService.SendLevelCompletionEvent(anonUserId, sessionId, levelId, durationMs);
     }
     
-    /// <summary>
-    /// Set the session ID (call from authentication/web backend)
-    /// </summary>
     public static void SetSessionId(string newSessionId)
     {
         PlayerPrefs.SetString("sessionId", newSessionId);
@@ -82,9 +106,6 @@ public class PlayerProgressManager : MonoBehaviour
             instance.sessionId = newSessionId;
     }
     
-    /// <summary>
-    /// Get the current anonymous user ID
-    /// </summary>
     public string GetAnonUserId()
     {
         return anonUserId;

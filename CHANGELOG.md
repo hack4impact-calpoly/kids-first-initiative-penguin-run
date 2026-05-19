@@ -62,22 +62,20 @@
 **File:** `Assets/Scripts/goal_Indicator.cs`
 
 **Summary:**
-- Integrated with new `PlayerProgressManager` architecture
-- Added explicit `[SerializeField]` for `PlayerProgressManager` reference (drag-and-drop in Inspector)
-- Added `OnValidate()` for editor-time safety - auto-finds PlayerProgressManager if not assigned
+- Integrated with the current `LevelProgressManager` level-completion flow
 - Tracks level start time in `Start()`
 - `OnTriggerEnter()` detects player reaching goal
-- New `HandleLevelComplete()` method:
+- `HandleLevelComplete()` now:
   - Calculates level duration
   - Gets current scene name as level ID
-  - Calls `playerProgressManager.SaveLevelCompletion()`
+  - Calls `LevelProgressManager.MarkLevelComplete()`
   - Logs completion with duration
-  - Ready for next level loading logic
+  - Leaves room for next level loading logic
 
 **Follows Guidelines:**
-- Explicit Inspector references (no magic FindObjectOfType calls in production)
-- Single responsibility: Detect goal collision and trigger save
-- Clear dependency declaration
+- Documents the actual completion flow used by the implementation
+- Single responsibility: Detect goal collision and mark level completion
+- Avoids stale setup notes about `PlayerProgressManager` dependencies that are not used here
 
 ---
 
