@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 4276389997718664531}
   - component: {fileID: 5407778939293543050}
   - component: {fileID: 7106158030732459011}
+  - component: {fileID: 7106158030732459012}
   m_Layer: 0
   m_Name: ballStartWithSpace 1
   m_TagString: Player
@@ -305,3 +306,19 @@ MonoBehaviour:
   excludedNameKeywords:
   - Sticky
   - Gravel
+--- !u!114 &7106158030732459012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584801465229007595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bce57a07c9bb4f3688ee826a4f940404, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PenguinFrictionBrakes
+  trackLayers:
+    serializedVersion: 2
+    m_Bits: 128
+  rayDistance: 0.95

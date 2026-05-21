@@ -11,7 +11,7 @@ public class goal_Indicator : MonoBehaviour
     [SerializeField] private DialogueManager dialogueManager;
     [SerializeField] private LevelVictoryPopup victoryPopup;
     [SerializeField] private bool showLevelCompletePopup = true;
-    [SerializeField] private string nextLevelSceneName = "Penguin Run Level 2";
+    [SerializeField] private string nextLevelSceneName = "Level2_Friction";
     [SerializeField] private string completionTitle = "Pip made it home!";
     [SerializeField] private string[] learnedItems =
     {

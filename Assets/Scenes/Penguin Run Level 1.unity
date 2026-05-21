@@ -549,7 +549,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 3
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 3
+  m_overflowMode: 1
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1672,7 +1672,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -426
+      value: -375
       objectReference: {fileID: 0}
     - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
       propertyPath: m_LocalPosition.z
@@ -2236,6 +2236,9 @@ MonoBehaviour:
   applyStartingVelocity: 1
   startingVelocityDuration: 1
   startingImpulse: 3000
+  stoppedSpeedThreshold: 8
+  stoppedDurationBeforeFailure: 1.1
+  minimumRunTimeBeforeStopFailure: 1.25
   penguinRb: {fileID: 0}
   penguin: {fileID: 0}
 --- !u!114 &1377078723
@@ -3754,6 +3757,10 @@ PrefabInstance:
       propertyPath: dialogueManager
       value: 
       objectReference: {fileID: 3141592002}
+    - target: {fileID: 7350269874010830246, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
+      propertyPath: nextLevelSceneName
+      value: Level2_Friction
+      objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalScale.x
       value: 25.065636
@@ -3772,7 +3779,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -79
+      value: -28
       objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalPosition.z
