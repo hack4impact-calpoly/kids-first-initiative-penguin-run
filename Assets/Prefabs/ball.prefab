@@ -216,3 +216,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b399e0113138f4543ba363f903436212, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ballScript
+  startingVelocity: {x: 3000, y: 0}
+  applyStartingVelocity: 1
+  startingVelocityDuration: 1
+  startingImpulse: 3000

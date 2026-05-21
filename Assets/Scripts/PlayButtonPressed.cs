@@ -3,6 +3,10 @@ using UnityEngine;
 public class PlayButtonPressed : MonoBehaviour
 {
     public ResetLevel resetLevel;
+    [SerializeField] private Vector2 startingVelocity = new Vector2(3000f, 0f);
+    [SerializeField] private bool applyStartingVelocity = true;
+    [SerializeField] private float startingVelocityDuration = 1f;
+    [SerializeField] private float startingImpulse = 3000f;
 
     private float camWidth;
     private float camHeight;
@@ -10,6 +14,8 @@ public class PlayButtonPressed : MonoBehaviour
 
     public Rigidbody2D penguinRb;
     public GameObject penguin;
+    private bool hasStarted;
+    private float applyStartingVelocityUntil;
 
     private void Start()
     {
@@ -58,6 +64,45 @@ public class PlayButtonPressed : MonoBehaviour
         if (DialogueManager.IsDialogueOpen){
             return;
         }
+        StartPenguin();
+    }
+
+    private void FixedUpdate()
+    {
+        if (applyStartingVelocity && hasStarted && penguinRb != null && penguinRb.simulated && Time.fixedTime <= applyStartingVelocityUntil)
+        {
+            ApplyStartingVelocity();
+        }
+    }
+
+    private void StartPenguin()
+    {
+        if (penguinRb == null || hasStarted)
+        {
+            return;
+        }
+
+        hasStarted = true;
         penguinRb.simulated = true;
+        if (applyStartingVelocity)
+        {
+            applyStartingVelocityUntil = Time.fixedTime + startingVelocityDuration;
+            penguinRb.WakeUp();
+            penguinRb.AddForce(Vector2.right * startingImpulse, ForceMode2D.Impulse);
+            ApplyStartingVelocity();
+        }
+    }
+
+    private void ApplyStartingVelocity()
+    {
+        Vector2 velocity = penguinRb.linearVelocity;
+        velocity.x = Mathf.Max(velocity.x, startingVelocity.x);
+
+        if (!Mathf.Approximately(startingVelocity.y, 0f))
+        {
+            velocity.y = startingVelocity.y;
+        }
+
+        penguinRb.linearVelocity = velocity;
     }
 }

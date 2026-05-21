@@ -44,7 +44,7 @@ GameObject:
   - component: {fileID: 9004956447219865207}
   - component: {fileID: 6951769357886319393}
   m_Layer: 7
-  m_Name: RampTrackPieceBase
+  m_Name: Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

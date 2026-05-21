@@ -229,3 +229,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6df5bef88c66508418636e03b8c0c392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayButtonPressed
+  resetLevel: {fileID: 0}
+  startingVelocity: {x: 3000, y: 0}
+  applyStartingVelocity: 1
+  startingVelocityDuration: 1
+  startingImpulse: 3000
+  penguinRb: {fileID: 0}
+  penguin: {fileID: 0}
