@@ -64,6 +64,15 @@ public class DialogueManager : MonoBehaviour
   private TMP_Text lessonIconText;
   private Button lessonDismissButton;
   private System.Action lessonDismissed;
+  private GameObject failureCardGroup;
+  private TMP_Text failureTitleText;
+  private TMP_Text failureBodyText;
+  private TMP_Text failurePrimaryButtonText;
+  private TMP_Text failureSecondaryButtonText;
+  private Button failurePrimaryButton;
+  private Button failureSecondaryButton;
+  private System.Action failurePrimaryAction;
+  private System.Action failureSecondaryAction;
   private GameObject completePopupGroup;
   private TMP_Text completeIconText;
   private TMP_Text completeTitleText;
@@ -131,6 +140,16 @@ public class DialogueManager : MonoBehaviour
     if (lessonDismissButton != null)
     {
       lessonDismissButton.onClick.RemoveListener(HideLessonCard);
+    }
+
+    if (failurePrimaryButton != null)
+    {
+      failurePrimaryButton.onClick.RemoveListener(HandleFailurePrimary);
+    }
+
+    if (failureSecondaryButton != null)
+    {
+      failureSecondaryButton.onClick.RemoveListener(HandleFailureSecondary);
     }
 
     if (completeReplayButton != null)
@@ -350,6 +369,47 @@ public class DialogueManager : MonoBehaviour
     callback?.Invoke();
   }
 
+  public void ShowFailureCard(string title, string body, string primaryLabel, System.Action primaryAction, string secondaryLabel = "", System.Action secondaryAction = null)
+  {
+    if (string.IsNullOrEmpty(title) && string.IsNullOrEmpty(body))
+    {
+      return;
+    }
+
+    HideSlideCue();
+    HideLessonCard();
+
+    if (failureCardGroup == null)
+    {
+      BuildFailureCard();
+    }
+
+    failureTitleText.text = title;
+    failureBodyText.text = body;
+    failurePrimaryButtonText.text = string.IsNullOrWhiteSpace(primaryLabel) ? "Try again" : primaryLabel;
+    failurePrimaryAction = primaryAction;
+    failureSecondaryAction = secondaryAction;
+
+    bool showSecondary = !string.IsNullOrWhiteSpace(secondaryLabel) && secondaryAction != null;
+    failureSecondaryButton.gameObject.SetActive(showSecondary);
+    failureSecondaryButtonText.text = showSecondary ? secondaryLabel : "";
+
+    failureCardGroup.SetActive(true);
+    failureCardGroup.transform.SetAsLastSibling();
+    RefreshBlockingDialogueState();
+  }
+
+  public void HideFailureCard()
+  {
+    if (failureCardGroup == null || !failureCardGroup.activeSelf)
+    {
+      return;
+    }
+
+    failureCardGroup.SetActive(false);
+    RefreshBlockingDialogueState();
+  }
+
   public void ShowLevelCompletePopup(string nextSceneName, string title, string[] learnedItems, string pipMessage, string nextPrompt)
   {
     HideSlideCue();
@@ -523,6 +583,99 @@ public class DialogueManager : MonoBehaviour
     lessonCardGroup.SetActive(false);
   }
 
+  private void BuildFailureCard()
+  {
+    RectTransform parent = EnsureRuntimeCanvas();
+
+    failureCardGroup = new GameObject("FailureFeedbackCard", typeof(RectTransform));
+    failureCardGroup.layer = LayerMask.NameToLayer("UI");
+    failureCardGroup.transform.SetParent(parent, false);
+
+    RectTransform groupRect = failureCardGroup.GetComponent<RectTransform>();
+    groupRect.anchorMin = new Vector2(0.5f, 0.5f);
+    groupRect.anchorMax = new Vector2(0.5f, 0.5f);
+    groupRect.pivot = new Vector2(0.5f, 0.5f);
+    groupRect.anchoredPosition = Vector2.zero;
+    groupRect.sizeDelta = new Vector2(1700f, 620f);
+
+    RectTransform border = CreateImageObject("FailurePanelBorder", groupRect, new Vector2(0.5f, 0.5f), new Vector2(0f, 130f), new Vector2(1560f, 410f), new Color32(255, 201, 52, 255), 34f, true).rectTransform;
+    CreateImageObject("FailurePanelFill", border, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(1550f, 400f), Color.white, 30f, true);
+
+    Image iconBackground = CreateImageObject("FailureIconBackground", border, new Vector2(0f, 0.5f), new Vector2(95f, 0f), new Vector2(118f, 118f), new Color32(36, 44, 88, 255), 59f, true);
+    Image pipIcon = CreateImageObject("FailurePipIcon", iconBackground.transform, new Vector2(0.5f, 0.5f), Vector2.zero, new Vector2(78f, 78f), Color.white, 0f, false);
+    pipIcon.sprite = speakerIconSprite;
+    pipIcon.enabled = speakerIconSprite != null;
+    pipIcon.preserveAspect = true;
+    pipIcon.raycastTarget = false;
+
+    failureTitleText = CreateTextObject("FailureTitle", border, new Vector2(0f, 1f), new Vector2(800f, -90f), new Vector2(1260f, 58f), 34f, new Color32(137, 73, 0, 255));
+    failureTitleText.alignment = TextAlignmentOptions.Left;
+    failureTitleText.fontStyle = FontStyles.Bold;
+    failureTitleText.enableAutoSizing = true;
+    failureTitleText.fontSizeMin = 24f;
+    failureTitleText.fontSizeMax = 34f;
+
+    failureBodyText = CreateTextObject("FailureBody", border, new Vector2(0f, 1f), new Vector2(800f, -175f), new Vector2(1260f, 110f), 30f, new Color32(65, 65, 65, 255));
+    failureBodyText.alignment = TextAlignmentOptions.TopLeft;
+    failureBodyText.fontStyle = FontStyles.Normal;
+    failureBodyText.enableAutoSizing = true;
+    failureBodyText.fontSizeMin = 22f;
+    failureBodyText.fontSizeMax = 30f;
+    failureBodyText.lineSpacing = 6f;
+
+    failurePrimaryButton = CreateFailureButton("FailurePrimaryButton", border, new Vector2(0f, 0f), new Vector2(340f, 76f), new Vector2(280f, 82f), new Color32(249, 194, 52, 255), new Color32(85, 50, 0, 255), out failurePrimaryButtonText);
+    failurePrimaryButton.onClick.AddListener(HandleFailurePrimary);
+
+    failureSecondaryButton = CreateFailureButton("FailureSecondaryButton", border, new Vector2(0f, 0f), new Vector2(645f, 76f), new Vector2(280f, 82f), new Color32(52, 58, 56, 255), Color.white, out failureSecondaryButtonText);
+    failureSecondaryButton.onClick.AddListener(HandleFailureSecondary);
+
+    failureCardGroup.SetActive(false);
+  }
+
+  private Button CreateFailureButton(string objectName, Transform parent, Vector2 anchor, Vector2 anchoredPosition, Vector2 size, Color fillColor, Color textColor, out TMP_Text label)
+  {
+    GameObject buttonObject = CreateImageObject(objectName, parent, anchor, anchoredPosition, size, fillColor, 36f, true).gameObject;
+    Image buttonImage = buttonObject.GetComponent<Image>();
+    Button button = buttonObject.AddComponent<Button>();
+    button.targetGraphic = buttonImage;
+    button.colors = new ColorBlock
+    {
+      normalColor = Color.white,
+      highlightedColor = new Color(1f, 1f, 1f, 0.9f),
+      pressedColor = new Color(0.82f, 0.82f, 0.82f, 1f),
+      selectedColor = new Color(1f, 1f, 1f, 0.9f),
+      disabledColor = new Color(0.7f, 0.7f, 0.7f, 0.5f),
+      colorMultiplier = 1f,
+      fadeDuration = 0.1f
+    };
+
+    label = CreateTextObject(objectName + "Text", buttonObject.transform, new Vector2(0.5f, 0.5f), Vector2.zero, size - new Vector2(32f, 22f), 28f, textColor);
+    label.alignment = TextAlignmentOptions.Center;
+    label.fontStyle = FontStyles.Bold;
+    label.enableAutoSizing = true;
+    label.fontSizeMin = 18f;
+    label.fontSizeMax = 28f;
+    return button;
+  }
+
+  private void HandleFailurePrimary()
+  {
+    System.Action callback = failurePrimaryAction;
+    failurePrimaryAction = null;
+    failureSecondaryAction = null;
+    HideFailureCard();
+    callback?.Invoke();
+  }
+
+  private void HandleFailureSecondary()
+  {
+    System.Action callback = failureSecondaryAction;
+    failurePrimaryAction = null;
+    failureSecondaryAction = null;
+    HideFailureCard();
+    callback?.Invoke();
+  }
+
   private void BuildLevelCompletePopup()
   {
     RectTransform parent = EnsureRuntimeCanvas();
@@ -655,8 +808,9 @@ public class DialogueManager : MonoBehaviour
   {
     bool introOpen = dialogueBox != null && dialogueBox.activeSelf;
     bool lessonOpen = lessonCardGroup != null && lessonCardGroup.activeSelf;
+    bool failureOpen = failureCardGroup != null && failureCardGroup.activeSelf;
     bool completeOpen = completePopupGroup != null && completePopupGroup.activeSelf;
-    IsDialogueOpen = externalDialogueOpen || introOpen || lessonOpen || completeOpen;
+    IsDialogueOpen = externalDialogueOpen || introOpen || lessonOpen || failureOpen || completeOpen;
   }
 
   private string BuildLearnedText(string[] learnedItems)

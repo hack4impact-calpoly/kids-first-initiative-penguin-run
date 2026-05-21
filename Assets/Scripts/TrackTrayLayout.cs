@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
@@ -84,6 +85,18 @@ public class TrackTrayLayout : MonoBehaviour
     private readonly List<GameObject> spawnedPieces = new List<GameObject>();
     private Button undoButton;
     private Image undoButtonImage;
+    private Image trayImage;
+    private Coroutine pulseCoroutine;
+    private Vector3 baseScale = Vector3.one;
+
+    public int SpawnedPieceCount
+    {
+        get
+        {
+            PruneDestroyedPieces();
+            return spawnedPieces.Count;
+        }
+    }
 
     private void Awake()
     {
@@ -113,9 +126,9 @@ public class TrackTrayLayout : MonoBehaviour
         rect.sizeDelta = panelSizeDelta;
         rect.localScale = Vector3.one;
 
-        Image panelImage = GetComponent<Image>();
-        panelImage.color = trayBackgroundColor;
-        panelImage.raycastTarget = false;
+        trayImage = GetComponent<Image>();
+        trayImage.color = trayBackgroundColor;
+        trayImage.raycastTarget = false;
 
         HideLegacyChildren();
         BuildPrompt();
@@ -128,6 +141,27 @@ public class TrackTrayLayout : MonoBehaviour
         }
 
         UpdateUndoButtonState();
+    }
+
+    public List<GameObject> GetSpawnedPiecesSnapshot()
+    {
+        PruneDestroyedPieces();
+        return new List<GameObject>(spawnedPieces);
+    }
+
+    public void PulseTrayHint()
+    {
+        if (!Application.isPlaying || !isActiveAndEnabled)
+        {
+            return;
+        }
+
+        if (pulseCoroutine != null)
+        {
+            StopCoroutine(pulseCoroutine);
+        }
+
+        pulseCoroutine = StartCoroutine(PulseTrayRoutine());
     }
 
     private void Update()
@@ -358,6 +392,47 @@ public class TrackTrayLayout : MonoBehaviour
         PruneDestroyedPieces();
         spawnedPieces.Add(piece);
         UpdateUndoButtonState();
+        FailureFeedbackManager activeFeedback = FindFirstObjectByType<FailureFeedbackManager>();
+        if (activeFeedback != null)
+        {
+            activeFeedback.NotifyPieceSpawned();
+        }
+    }
+
+    private IEnumerator PulseTrayRoutine()
+    {
+        if (trayImage == null)
+        {
+            trayImage = GetComponent<Image>();
+        }
+
+        baseScale = transform.localScale;
+        Color baseColor = trayImage != null ? trayImage.color : trayBackgroundColor;
+        Color pulseColor = new Color32(47, 132, 196, 255);
+        const float duration = 1.8f;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            elapsed += Time.unscaledDeltaTime;
+            float pulse = (Mathf.Sin(elapsed * Mathf.PI * 5f) + 1f) * 0.5f;
+            transform.localScale = baseScale * Mathf.Lerp(1f, 1.025f, pulse);
+
+            if (trayImage != null)
+            {
+                trayImage.color = Color.Lerp(baseColor, pulseColor, pulse);
+            }
+
+            yield return null;
+        }
+
+        transform.localScale = baseScale;
+        if (trayImage != null)
+        {
+            trayImage.color = baseColor;
+        }
+
+        pulseCoroutine = null;
     }
 
     private void PruneDestroyedPieces()
