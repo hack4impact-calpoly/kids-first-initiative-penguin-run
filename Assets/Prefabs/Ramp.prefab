@@ -43,8 +43,9 @@ GameObject:
   - component: {fileID: 8115121346007993233}
   - component: {fileID: 9004956447219865207}
   - component: {fileID: 6951769357886319393}
+  - component: {fileID: 7628308127478115402}
   m_Layer: 7
-  m_Name: RampTrackPieceBase
+  m_Name: Ramp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -192,6 +193,21 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   snapRotation: 0
+--- !u!114 &7628308127478115402
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5121568958707775034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b7c5e96d8a04b829b5145f1b01e6f32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TrackTile
+  decel: 0
+  isGravel: 0
+  tileLabel: Steep Ice
 --- !u!1 &8225380517546956010
 GameObject:
   m_ObjectHideFlags: 0

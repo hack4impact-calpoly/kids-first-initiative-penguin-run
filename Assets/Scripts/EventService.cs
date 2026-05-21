@@ -9,10 +9,14 @@ public class EventService : MonoBehaviour
     [Tooltip("Configuration for API endpoints and game ID")]
     private PlayerProgressManagerSO config;
     
+    private void Awake()
+    {
+        LoadConfigIfMissing();
+    }
+
     private void OnValidate()
     {
-        if (config == null)
-            config = Resources.Load<PlayerProgressManagerSO>("Configs/PlayerProgressManager");
+        LoadConfigIfMissing();
     }
     
     public void SendLevelCompletionEvent(string anonUserId, string sessionId, string levelId, int durationMs)
@@ -75,6 +79,12 @@ public class EventService : MonoBehaviour
                 Debug.LogError($"[EventService] Response: {request.downloadHandler.text}");
             }
         }
+    }
+
+    private void LoadConfigIfMissing()
+    {
+        if (config == null)
+            config = Resources.Load<PlayerProgressManagerSO>("Configs/PlayerProgressManager");
     }
     
     [System.Serializable]
