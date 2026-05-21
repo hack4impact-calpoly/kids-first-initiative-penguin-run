@@ -19,6 +19,10 @@ public class DialogueManager : MonoBehaviour
   [SerializeField] private bool buildDialogueBoxIfMissing = true;
   [SerializeField] private Sprite speakerIconSprite;
 
+  [Header("Dialogue Audio")]
+  [SerializeField] private AudioClip introDialogueAudio;
+  [SerializeField, Range(0f, 1f)] private float introDialogueAudioVolume = 1f;
+
   [Header("Slide Cue")]
   [SerializeField] private Vector2 slideCueScreenOffset = new Vector2(0f, 125f);
   [SerializeField] private Vector2 slideCueSize = new Vector2(430f, 112f);
@@ -70,6 +74,7 @@ public class DialogueManager : MonoBehaviour
   private TMP_Text completeNextButtonText;
   private Button completeReplayButton;
   private Button completeNextButton;
+  private AudioSource dialogueAudioSource;
   private string completeNextSceneName = "";
   private static DialogueManager activeManager;
   private static bool externalDialogueOpen;
@@ -137,6 +142,8 @@ public class DialogueManager : MonoBehaviour
     {
       completeNextButton.onClick.RemoveListener(LoadNextLevel);
     }
+
+    StopIntroDialogueAudio();
   }
 
   private void Start()
@@ -178,6 +185,15 @@ public class DialogueManager : MonoBehaviour
     dialogueText.text = messages[currentMessageIndex];
     dialogueBox.SetActive(true);
 
+    if (currentMessageIndex == 0)
+    {
+      PlayIntroDialogueAudio();
+    }
+    else
+    {
+      StopIntroDialogueAudio();
+    }
+
     if (advanceButtonText != null)
     {
       advanceButtonText.text = advanceButtonLabel;
@@ -186,6 +202,8 @@ public class DialogueManager : MonoBehaviour
 
   public void NextMessage()
   {
+    StopIntroDialogueAudio();
+
     if (showOnlyFirstMessage)
     {
       currentMessageIndex = 0;
@@ -210,12 +228,53 @@ public class DialogueManager : MonoBehaviour
 
   public void HideDialogue()
   {
+    StopIntroDialogueAudio();
+
     if (dialogueBox != null)
     {
       dialogueBox.SetActive(false);
     }
 
     RefreshBlockingDialogueState();
+  }
+
+  private void PlayIntroDialogueAudio()
+  {
+    if (introDialogueAudio == null)
+    {
+      return;
+    }
+
+    AudioSource source = EnsureDialogueAudioSource();
+    source.clip = introDialogueAudio;
+    source.volume = introDialogueAudioVolume;
+    source.loop = false;
+    source.Stop();
+    source.Play();
+  }
+
+  private void StopIntroDialogueAudio()
+  {
+    if (dialogueAudioSource != null && dialogueAudioSource.isPlaying)
+    {
+      dialogueAudioSource.Stop();
+    }
+  }
+
+  private AudioSource EnsureDialogueAudioSource()
+  {
+    if (dialogueAudioSource == null)
+    {
+      dialogueAudioSource = GetComponent<AudioSource>();
+      if (dialogueAudioSource == null)
+      {
+        dialogueAudioSource = gameObject.AddComponent<AudioSource>();
+      }
+    }
+
+    dialogueAudioSource.playOnAwake = false;
+    dialogueAudioSource.spatialBlend = 0f;
+    return dialogueAudioSource;
   }
 
   public void ShowSlideCue(string message, Transform target = null, Sprite icon = null)

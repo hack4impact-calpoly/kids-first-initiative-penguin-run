@@ -549,7 +549,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1545,7 +1545,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_TextWrappingMode: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 1
+  m_overflowMode: 3
   m_linkedTextComponent: {fileID: 0}
   parentLinkedComponent: {fileID: 0}
   m_enableKerning: 0
@@ -1663,12 +1663,16 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 74.3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3183
+      value: 2864
       objectReference: {fileID: 0}
     - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -552
+      value: -426
       objectReference: {fileID: 0}
     - target: {fileID: 3509327893239940169, guid: 94ea79ff05c0b42a490b460d33c5b588, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3276,6 +3280,8 @@ MonoBehaviour:
   advanceButtonText: {fileID: 0}
   buildDialogueBoxIfMissing: 1
   speakerIconSprite: {fileID: 8935773784369645873, guid: af4e6254fa4e0488795b3b556c9b6055, type: 3}
+  introDialogueAudio: {fileID: 8300000, guid: 7a29279fe620c48c99aae8112fcec85f, type: 3}
+  introDialogueAudioVolume: 1
   slideCueScreenOffset: {x: 0, y: 125}
   slideCueSize: {x: 430, y: 112}
   slideCueColor: {r: 1, g: 1, b: 1, a: 1}
@@ -3374,6 +3380,14 @@ MonoBehaviour:
   headingTextColor: {r: 0.11372549, g: 0.29803923, b: 0.50980395, a: 1}
   nextButtonFillColor: {r: 1, g: 0.78039217, b: 0.21568628, a: 1}
   showGravityDemo: 1
+  gravityTitle: Gravity pulls Pip down the hill
+  gravityDescription: Gravity is an invisible force that pulls everything toward
+    the ground. The steeper the hill, the more gravity speeds you up!
+  gravityLabel: Gravity pulls Pip down the hill
+  animationStepAudio: {fileID: 8300000, guid: e7317cbb6b50040cfb08009a7def00a3, type: 3}
+  animationStepAudioVolume: 1
+  completionPromptAudio: {fileID: 8300000, guid: 2b4c27c9e388e4ae8890c17071682ae0, type: 3}
+  completionPromptAudioVolume: 1
 --- !u!114 &331696416793651560 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4276389997718664531, guid: e40df790c34464d75abb986e1ed05e72, type: 3}
@@ -3754,11 +3768,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3077.0732
+      value: 2475
       objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -225.0343
+      value: -79
       objectReference: {fileID: 0}
     - target: {fileID: 7590696715749237430, guid: f3db1c16b493a44aa8bbc3aed2307309, type: 3}
       propertyPath: m_LocalPosition.z

@@ -34,6 +34,17 @@ public class LevelVictoryPopup : MonoBehaviour
     [SerializeField] private Color nextButtonFillColor = new Color32(255, 199, 55, 255);
     [SerializeField] private bool showGravityDemo = true;
 
+    [Header("Gravity Demo")]
+    [SerializeField] private string gravityTitle = "Gravity pulls Pip down the hill";
+    [SerializeField, TextArea(2, 4)] private string gravityDescription = "Gravity is an invisible force that pulls everything toward the ground. The steeper the hill, the more gravity speeds you up!";
+    [SerializeField] private string gravityLabel = "Gravity pulls Pip down the hill";
+
+    [Header("Audio")]
+    [SerializeField] private AudioClip animationStepAudio;
+    [SerializeField, Range(0f, 1f)] private float animationStepAudioVolume = 1f;
+    [SerializeField] private AudioClip completionPromptAudio;
+    [SerializeField, Range(0f, 1f)] private float completionPromptAudioVolume = 1f;
+
     private readonly List<AnimatedElement> animatedElements = new List<AnimatedElement>();
     private readonly List<Image> headerImages = new List<Image>();
     private readonly List<Image> starImages = new List<Image>();
@@ -61,6 +72,8 @@ public class LevelVictoryPopup : MonoBehaviour
     private RectTransform gravityMover;
     private RectTransform gravityArrow;
     private TMP_Text gravityLabelText;
+    private TMP_Text gravityDescriptionText;
+    private AudioSource stepAudioSource;
     private string nextSceneName;
     private int currentStep;
     private float animationStartTime;
@@ -84,6 +97,8 @@ public class LevelVictoryPopup : MonoBehaviour
         {
             nextButton.onClick.RemoveListener(AdvanceOrLoadNext);
         }
+
+        StopStepAudio();
 
         if (IsOpen)
         {
@@ -138,6 +153,8 @@ public class LevelVictoryPopup : MonoBehaviour
 
     public void Hide()
     {
+        StopStepAudio();
+
         if (popupGroup != null)
         {
             popupGroup.SetActive(false);
@@ -214,17 +231,26 @@ public class LevelVictoryPopup : MonoBehaviour
 
     private void BuildAnimationStep(RectTransform parent)
     {
-        TMP_Text animationTitle = CreateTextObject("AnimationTitle", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, 245f), new Vector2(1000f, 72f), 48f, headingTextColor);
-        animationTitle.text = "Gravity pulls Pip down the hill";
+        TMP_Text animationTitle = CreateTextObject("AnimationTitle", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, 258f), new Vector2(1000f, 64f), 46f, headingTextColor);
+        animationTitle.text = gravityTitle;
         animationTitle.alignment = TextAlignmentOptions.Center;
         animationTitle.fontStyle = FontStyles.Bold;
         animationTitle.enableAutoSizing = true;
         animationTitle.fontSizeMin = 34f;
-        animationTitle.fontSizeMax = 48f;
+        animationTitle.fontSizeMax = 46f;
+
+        gravityDescriptionText = CreateTextObject("GravityDescription", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, 176f), new Vector2(960f, 92f), 30f, primaryTextColor);
+        gravityDescriptionText.text = gravityDescription;
+        gravityDescriptionText.alignment = TextAlignmentOptions.Center;
+        gravityDescriptionText.fontStyle = FontStyles.Bold;
+        gravityDescriptionText.enableAutoSizing = true;
+        gravityDescriptionText.fontSizeMin = 22f;
+        gravityDescriptionText.fontSizeMax = 30f;
+        gravityDescriptionText.lineSpacing = 8f;
 
         BuildCelebrationLayer(parent);
 
-        RectTransform demoCard = CreateImageObject("GravityDemoCard", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, 12f), new Vector2(900f, 380f), learnedCardColor, 28f, true).rectTransform;
+        RectTransform demoCard = CreateImageObject("GravityDemoCard", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, -36f), new Vector2(900f, 330f), learnedCardColor, 28f, true).rectTransform;
         BuildGravityDemo(demoCard);
     }
 
@@ -244,7 +270,7 @@ public class LevelVictoryPopup : MonoBehaviour
         gravityMover = mover.rectTransform;
 
         gravityLabelText = CreateTextObject("GravityLabel", parent, new Vector2(0.5f, 0f), new Vector2(40f, 58f), new Vector2(760f, 70f), 36f, headingTextColor);
-        gravityLabelText.text = "Gravity pulls Pip down the hill";
+        gravityLabelText.text = gravityLabel;
         gravityLabelText.alignment = TextAlignmentOptions.Center;
         gravityLabelText.fontStyle = FontStyles.Bold;
         gravityLabelText.enableAutoSizing = true;
@@ -579,6 +605,8 @@ public class LevelVictoryPopup : MonoBehaviour
         SetStepActive(animationStepRoot, currentStep == AnimationStep);
         SetStepActive(dialogueStepRoot, currentStep == DialogueStep);
 
+        PlayCurrentStepAudio();
+
         bool isDialogueStep = currentStep == DialogueStep;
         if (replayButtonObject != null)
         {
@@ -612,6 +640,70 @@ public class LevelVictoryPopup : MonoBehaviour
         }
 
         animationStartTime = Time.unscaledTime;
+    }
+
+    private void PlayCurrentStepAudio()
+    {
+        if (currentStep == AnimationStep)
+        {
+            PlayStepAudio(animationStepAudio, animationStepAudioVolume, "animation step");
+            return;
+        }
+
+        if (currentStep == DialogueStep)
+        {
+            PlayStepAudio(completionPromptAudio, completionPromptAudioVolume, "completion prompt");
+            return;
+        }
+
+        StopStepAudio();
+    }
+
+    private void PlayStepAudio(AudioClip clip, float volume, string stepName)
+    {
+        if (clip == null)
+        {
+            Debug.LogWarning($"{nameof(LevelVictoryPopup)} on {name} has no {stepName} audio assigned.", this);
+            StopStepAudio();
+            return;
+        }
+
+        if (clip.loadState == AudioDataLoadState.Unloaded)
+        {
+            clip.LoadAudioData();
+        }
+
+        AudioSource source = EnsureStepAudioSource();
+        source.clip = clip;
+        source.volume = Mathf.Clamp01(volume);
+        source.loop = false;
+        source.Stop();
+        source.Play();
+    }
+
+    private void StopStepAudio()
+    {
+        if (stepAudioSource != null && stepAudioSource.isPlaying)
+        {
+            stepAudioSource.Stop();
+        }
+    }
+
+    private AudioSource EnsureStepAudioSource()
+    {
+        if (stepAudioSource == null)
+        {
+            stepAudioSource = GetComponent<AudioSource>();
+            if (stepAudioSource == null)
+            {
+                stepAudioSource = gameObject.AddComponent<AudioSource>();
+            }
+        }
+
+        stepAudioSource.playOnAwake = false;
+        stepAudioSource.spatialBlend = 0f;
+        stepAudioSource.ignoreListenerPause = true;
+        return stepAudioSource;
     }
 
     private void SetStepActive(RectTransform stepRoot, bool active)

@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 2529052350054862028}
   - component: {fileID: 4276389997718664531}
   - component: {fileID: 5407778939293543050}
+  - component: {fileID: 7106158030732459011}
   m_Layer: 0
   m_Name: ballStartWithSpace 1
   m_TagString: Player
@@ -216,7 +217,7 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b399e0113138f4543ba363f903436212, type: 3}
-  m_Name: 
+  m_Name:
   m_EditorClassIdentifier: Assembly-CSharp::ballScript
   startingVelocity: {x: 3000, y: 0}
   applyStartingVelocity: 1
@@ -278,3 +279,29 @@ CapsuleCollider2D:
   m_Offset: {x: -0.12423073, y: -0.124227315}
   m_Size: {x: 10.759033, y: 16.39815}
   m_Direction: 0
+--- !u!114 &7106158030732459011
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 584801465229007595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f6c22e4591746a6a47b7c64db3c720a, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::PenguinIceSlideAudio
+  slideClip: {fileID: 8300000, guid: 81cfb14a04d6e423290340958ca760a4, type: 3}
+  volume: 0.55
+  minSlideSpeed: 1
+  iceTrackMaterial: {fileID: 6200000, guid: 984c9eed9346fa0459b5f8d6d058fbe3, type: 2}
+  trackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  iceNameKeywords:
+  - Ice
+  - TrackPieceBase
+  - Ramp
+  excludedNameKeywords:
+  - Sticky
+  - Gravel
