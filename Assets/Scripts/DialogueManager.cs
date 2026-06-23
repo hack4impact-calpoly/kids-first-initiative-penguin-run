@@ -88,6 +88,16 @@ public class DialogueManager : MonoBehaviour
   private static DialogueManager activeManager;
   private static bool externalDialogueOpen;
 
+  // Message queued by another system (e.g. PipLauncher) to show after a scene reload,
+  // bypassing the normal intro dialogue.
+  private static string pendingResetMessage;
+  private bool showingOverrideMessage;
+
+  public static void QueueResetMessage(string message)
+  {
+    pendingResetMessage = message;
+  }
+
   // We will use this to prevent interaction while dialogue boxes are open
   public static bool IsDialogueOpen { get; private set; }
 
@@ -167,7 +177,36 @@ public class DialogueManager : MonoBehaviour
 
   private void Start()
   {
+    if (!string.IsNullOrEmpty(pendingResetMessage))
+    {
+      string message = pendingResetMessage;
+      pendingResetMessage = null;
+      ShowSingleMessage(message);
+      return;
+    }
+
     ShowMessage(0);
+  }
+
+  // Shows a single one-off message in the dialogue box that simply closes when advanced.
+  public void ShowSingleMessage(string message)
+  {
+    if (dialogueBox == null || dialogueText == null)
+    {
+      return;
+    }
+
+    showingOverrideMessage = true;
+    IsDialogueOpen = true;
+    currentMessageIndex = 0;
+    dialogueText.text = message;
+    dialogueBox.SetActive(true);
+    StopIntroDialogueAudio();
+
+    if (advanceButtonText != null)
+    {
+      advanceButtonText.text = advanceButtonLabel;
+    }
   }
   private void Update()
   {
@@ -222,6 +261,14 @@ public class DialogueManager : MonoBehaviour
   public void NextMessage()
   {
     StopIntroDialogueAudio();
+
+    if (showingOverrideMessage)
+    {
+      showingOverrideMessage = false;
+      currentMessageIndex = 0;
+      HideDialogue();
+      return;
+    }
 
     if (showOnlyFirstMessage)
     {
