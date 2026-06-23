@@ -34,6 +34,72 @@ public class LevelVictoryPopup : MonoBehaviour
     [SerializeField] private Color nextButtonFillColor = new Color32(255, 199, 55, 255);
     [SerializeField] private bool showGravityDemo = true;
 
+    [Header("Final Action")]
+    [Tooltip("When on, the final 'Next Level' button is shown as plain, non-interactive text (e.g. 'Take the quiz').")]
+    [SerializeField] private bool finalActionIsText = false;
+    [SerializeField] private string finalActionText = "Take the quiz";
+
+    public void SetFinalActionAsText(bool isText, string text = null)
+    {
+        finalActionIsText = isText;
+        if (!string.IsNullOrEmpty(text))
+        {
+            finalActionText = text;
+        }
+    }
+
+    public void SetConceptAnimationVisible(bool visible)
+    {
+        conceptAnimationVisible = visible;
+        ApplyConceptAnimationVisibility();
+    }
+
+    private void ApplyConceptAnimationVisibility()
+    {
+        if (gravityDemoCard != null)
+        {
+            gravityDemoCard.gameObject.SetActive(conceptAnimationVisible);
+        }
+
+        for (int i = 0; i < animatedElements.Count; i++)
+        {
+            if (animatedElements[i].rect != null)
+            {
+                animatedElements[i].rect.gameObject.SetActive(conceptAnimationVisible);
+            }
+        }
+    }
+
+    public void SetConceptStep(string title, string description, string label)
+    {
+        if (!string.IsNullOrEmpty(title))
+        {
+            gravityTitle = title;
+        }
+        if (!string.IsNullOrEmpty(description))
+        {
+            gravityDescription = description;
+        }
+        if (!string.IsNullOrEmpty(label))
+        {
+            gravityLabel = label;
+        }
+
+        // Apply live if the popup is already built.
+        if (animationTitleText != null)
+        {
+            animationTitleText.text = gravityTitle;
+        }
+        if (gravityDescriptionText != null)
+        {
+            gravityDescriptionText.text = gravityDescription;
+        }
+        if (gravityLabelText != null)
+        {
+            gravityLabelText.text = gravityLabel;
+        }
+    }
+
     [Header("Gravity Demo")]
     [SerializeField] private string gravityTitle = "Gravity pulls Pip down the hill";
     [SerializeField, TextArea(2, 4)] private string gravityDescription = "Gravity is an invisible force that pulls everything toward the ground. The steeper the hill, the more gravity speeds you up!";
@@ -71,8 +137,11 @@ public class LevelVictoryPopup : MonoBehaviour
     private GameObject nextButtonObject;
     private RectTransform gravityMover;
     private RectTransform gravityArrow;
+    private RectTransform gravityDemoCard;
+    private bool conceptAnimationVisible = true;
     private TMP_Text gravityLabelText;
     private TMP_Text gravityDescriptionText;
+    private TMP_Text animationTitleText;
     private AudioSource stepAudioSource;
     private string nextSceneName;
     private int currentStep;
@@ -238,6 +307,7 @@ public class LevelVictoryPopup : MonoBehaviour
         animationTitle.enableAutoSizing = true;
         animationTitle.fontSizeMin = 34f;
         animationTitle.fontSizeMax = 46f;
+        animationTitleText = animationTitle;
 
         gravityDescriptionText = CreateTextObject("GravityDescription", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, 176f), new Vector2(960f, 92f), 30f, primaryTextColor);
         gravityDescriptionText.text = gravityDescription;
@@ -251,7 +321,10 @@ public class LevelVictoryPopup : MonoBehaviour
         BuildCelebrationLayer(parent);
 
         RectTransform demoCard = CreateImageObject("GravityDemoCard", parent, new Vector2(0.5f, 0.5f), new Vector2(0f, -36f), new Vector2(900f, 330f), learnedCardColor, 28f, true).rectTransform;
+        gravityDemoCard = demoCard;
         BuildGravityDemo(demoCard);
+
+        ApplyConceptAnimationVisibility();
     }
 
     private void BuildGravityDemo(RectTransform parent)
@@ -608,6 +681,7 @@ public class LevelVictoryPopup : MonoBehaviour
         PlayCurrentStepAudio();
 
         bool isDialogueStep = currentStep == DialogueStep;
+        bool quizFinal = isDialogueStep && finalActionIsText;
         if (replayButtonObject != null)
         {
             replayButtonObject.SetActive(isDialogueStep);
@@ -625,18 +699,39 @@ public class LevelVictoryPopup : MonoBehaviour
             {
                 fill.sizeDelta = isDialogueStep ? new Vector2(337f, 84f) : new Vector2(242f, 78f);
             }
+
+            // In quiz mode the final action is plain text, not a button: hide the chrome and disable clicks.
+            Image background = nextButtonObject.GetComponent<Image>();
+            if (background != null)
+            {
+                background.enabled = !quizFinal;
+            }
+
+            if (fill != null)
+            {
+                Image fillImage = fill.GetComponent<Image>();
+                if (fillImage != null)
+                {
+                    fillImage.enabled = !quizFinal;
+                }
+            }
+
+            if (nextButton != null)
+            {
+                nextButton.interactable = !quizFinal;
+            }
         }
 
         if (nextButtonText != null)
         {
-            nextButtonText.text = isDialogueStep ? "Next Level" : "Next";
-            nextButtonText.rectTransform.anchoredPosition = isDialogueStep ? new Vector2(-26f, 0f) : Vector2.zero;
-            nextButtonText.rectTransform.sizeDelta = isDialogueStep ? new Vector2(230f, 60f) : new Vector2(190f, 60f);
+            nextButtonText.text = quizFinal ? finalActionText : (isDialogueStep ? "Next Level" : "Next");
+            nextButtonText.rectTransform.anchoredPosition = (isDialogueStep && !quizFinal) ? new Vector2(-26f, 0f) : Vector2.zero;
+            nextButtonText.rectTransform.sizeDelta = isDialogueStep ? new Vector2(quizFinal ? 345f : 230f, 60f) : new Vector2(190f, 60f);
         }
 
         if (nextButtonIcon != null)
         {
-            nextButtonIcon.gameObject.SetActive(isDialogueStep && nextIconSprite != null);
+            nextButtonIcon.gameObject.SetActive(isDialogueStep && !quizFinal && nextIconSprite != null);
         }
 
         animationStartTime = Time.unscaledTime;
