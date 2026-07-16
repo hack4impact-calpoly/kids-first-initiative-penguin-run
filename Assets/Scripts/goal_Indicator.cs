@@ -121,7 +121,7 @@ public class goal_Indicator : MonoBehaviour
         }
         else
         {
-            Debug.LogError("[goal_Indicator] PlayerProgressManager not found!");
+            PlayerProgressManager.ReportLevelCompletion(currentLevelName, levelDuration);
         }
 
     }

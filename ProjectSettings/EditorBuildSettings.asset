@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level2_Friction.unity
     guid: 6aa3bb22f4834f5ba740d96d9f7a3b23
+  - enabled: 1
+    path: Assets/Scenes/Level3_PE.unity
+    guid: fe7966272db84469bb25cd8fb0e79d8d
   - enabled: 0
     path: Assets/Scenes/Penguin Run Level 2.unity
     guid: 1fc6aabfc8fd0744f9fc6f8cb4943786
