@@ -666,6 +666,7 @@ public class Level2FrictionController : MonoBehaviour
     private void CompleteWin()
     {
         state = LevelState.Complete;
+        PenguinLevelProgressService.CompleteLevel(2);
         StopPenguin();
         ShowCue(HomeCue, 1.1f);
         StartCoroutine(ShowWinAfterDelay());

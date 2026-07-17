@@ -426,6 +426,7 @@ public class PipLauncher : MonoBehaviour
         {
             StopPip();
             hasResult = true;
+            PenguinLevelProgressService.CompleteLevel(3);
 
             if (showLevelCompletePopupOnIgloo)
             {
