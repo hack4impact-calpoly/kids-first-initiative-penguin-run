@@ -1,0 +1,400 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Harper Voice Settings Comparison</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: #17222b;
+      background: #f4f6f7;
+      font-synthesis: none;
+    }
+
+    * {
+      box-sizing: border-box;
+      letter-spacing: 0;
+    }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+    }
+
+    main {
+      width: min(1040px, calc(100% - 32px));
+      margin: 32px auto 56px;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      margin: 8px 0 24px;
+      color: #56636c;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+
+    .reference {
+      padding: 20px;
+      border: 2px solid #147d76;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .reference-header,
+    .candidate-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    h2,
+    h3 {
+      margin: 0;
+      font-size: 18px;
+      line-height: 1.35;
+    }
+
+    .duration {
+      color: #5f6b73;
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
+    audio {
+      display: block;
+      width: 100%;
+      height: 42px;
+      margin-top: 14px;
+    }
+
+    .candidates {
+      margin-top: 28px;
+    }
+
+    .candidates > h2 {
+      margin-bottom: 12px;
+    }
+
+    .candidate {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(280px, 1.35fr);
+      gap: 16px 24px;
+      padding: 18px 20px;
+      border: 1px solid #cbd2d6;
+      border-radius: 6px;
+      background: #ffffff;
+    }
+
+    .candidate + .candidate {
+      margin-top: 10px;
+    }
+
+    .candidate:has(input:checked) {
+      border-color: #d85c41;
+      box-shadow: 0 0 0 1px #d85c41;
+    }
+
+    .settings {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .setting {
+      padding: 3px 7px;
+      border: 1px solid #d7dcdf;
+      border-radius: 4px;
+      color: #45515a;
+      background: #f7f8f9;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 12px;
+      white-space: nowrap;
+    }
+
+    .candidate audio {
+      align-self: center;
+      margin: 0;
+    }
+
+    .choice {
+      grid-column: 1 / -1;
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      gap: 8px;
+      color: #34414a;
+      font-size: 14px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    .choice input {
+      width: 18px;
+      height: 18px;
+      margin: 0;
+      accent-color: #d85c41;
+    }
+
+    .notes {
+      margin-top: 24px;
+    }
+
+    label[for="notes"] {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    textarea {
+      display: block;
+      width: 100%;
+      min-height: 96px;
+      resize: vertical;
+      padding: 12px;
+      border: 1px solid #bfc8cd;
+      border-radius: 6px;
+      color: inherit;
+      background: #ffffff;
+      font: inherit;
+      line-height: 1.45;
+    }
+
+    textarea:focus-visible,
+    input:focus-visible {
+      outline: 3px solid rgba(20, 125, 118, 0.25);
+      outline-offset: 2px;
+    }
+
+    @media (max-width: 720px) {
+      main {
+        width: min(100% - 20px, 1040px);
+        margin-top: 18px;
+      }
+
+      .candidate {
+        grid-template-columns: 1fr;
+      }
+
+      .choice {
+        grid-column: 1;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h1>Harper Voice Settings Comparison</h1>
+    <p class="subtitle">Control text: “Hi! I’m Pip! Ice is super slippery - I slide really fast! Can you help me get home?”</p>
+
+    <section class="reference">
+      <div class="reference-header">
+        <h2>Existing Level 1 reference</h2>
+        <span class="duration">5.69s</span>
+      </div>
+      <audio controls preload="metadata" src="../../Assets/Audio/level_1_pip_intro.mp3"></audio>
+    </section>
+
+    <section class="candidates">
+      <h2>Harper candidates</h2>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>A · Likely defaults</h3>
+            <span class="duration">6.16s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .50</span>
+            <span class="setting">similarity .75</span>
+            <span class="setting">style .00</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.00</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="A_default_m2.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="A"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>B · Current new-clip settings</h3>
+            <span class="duration">6.45s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .42</span>
+            <span class="setting">similarity .82</span>
+            <span class="setting">style .30</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed .92</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="B_current_m2.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="B"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>C · More expressive</h3>
+            <span class="duration">6.35s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .35</span>
+            <span class="setting">similarity .80</span>
+            <span class="setting">style .45</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.00</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="C_expressive_m2.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="C"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>D · More stable</h3>
+            <span class="duration">6.22s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .65</span>
+            <span class="setting">similarity .80</span>
+            <span class="setting">style .10</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.00</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="D_stable_m2.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="D"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>E · Defaults without speaker boost</h3>
+            <span class="duration">6.16s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .50</span>
+            <span class="setting">similarity .75</span>
+            <span class="setting">style .00</span>
+            <span class="setting">boost off</span>
+            <span class="setting">speed 1.00</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="E_default_no_boost_m2.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="E"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>F · Turbo model defaults</h3>
+            <span class="duration">6.58s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">turbo_v2_5</span>
+            <span class="setting">stability .50</span>
+            <span class="setting">similarity .75</span>
+            <span class="setting">style .00</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.00</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="F_default_turbo_v25.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="F"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>G · Defaults, faster</h3>
+            <span class="duration">5.88s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .50</span>
+            <span class="setting">similarity .75</span>
+            <span class="setting">style .00</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.08</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="G_default_m2_speed_108.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="G"> Mark closest</label>
+      </article>
+
+      <article class="candidate">
+        <div>
+          <div class="candidate-header">
+            <h3>H · Defaults, fastest</h3>
+            <span class="duration">5.62s</span>
+          </div>
+          <div class="settings">
+            <span class="setting">multilingual_v2</span>
+            <span class="setting">stability .50</span>
+            <span class="setting">similarity .75</span>
+            <span class="setting">style .00</span>
+            <span class="setting">boost on</span>
+            <span class="setting">speed 1.12</span>
+          </div>
+        </div>
+        <audio controls preload="metadata" src="H_default_m2_speed_112.mp3"></audio>
+        <label class="choice"><input type="radio" name="closest" value="H"> Mark closest</label>
+      </article>
+    </section>
+
+    <section class="notes">
+      <label for="notes">Listening notes</label>
+      <textarea id="notes" placeholder="Tone, pacing, emphasis, brightness..."></textarea>
+    </section>
+  </main>
+
+  <script>
+    const players = [...document.querySelectorAll("audio")];
+    const choices = [...document.querySelectorAll('input[name="closest"]')];
+    const notes = document.querySelector("#notes");
+
+    players.forEach((player) => {
+      player.addEventListener("play", () => {
+        players.forEach((other) => {
+          if (other !== player) other.pause();
+        });
+      });
+    });
+
+    const savedChoice = localStorage.getItem("harper-closest");
+    const savedNotes = localStorage.getItem("harper-notes");
+    const selected = choices.find((choice) => choice.value === savedChoice);
+    if (selected) selected.checked = true;
+    if (savedNotes) notes.value = savedNotes;
+
+    choices.forEach((choice) => {
+      choice.addEventListener("change", () => {
+        localStorage.setItem("harper-closest", choice.value);
+      });
+    });
+
+    notes.addEventListener("input", () => {
+      localStorage.setItem("harper-notes", notes.value);
+    });
+  </script>
+</body>
+</html>

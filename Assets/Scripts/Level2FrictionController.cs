@@ -44,13 +44,15 @@ public class Level2FrictionController : MonoBehaviour
     [SerializeField] private string cliffObjectName = "OutOfBoundsCliff";
 
     private const string SceneName = "Level2_Friction";
-    private const string IntroMessage = "Phew, I made it home last time! But uh-oh… this hill is even steeper. I'm gonna go SO fast I'll zoom right past my igloo! I need something rough and bumpy to slow me down — can you help?";
+    private const string IntroMessage = "This hill is steep, so I'll go too fast! Build the path, then use bumpy gravel to slow me down near my igloo.";
     private const string IceCue = "Wheee — here I go, super fast!";
     private const string GravelCue = "Brrrt! Friction!";
     private const string HomeCue = "Ahh… nice and slow. Home!";
-    private const string OvershootFail = "Aaah, too fast! I shot right past my house! Smooth ice never slows me down — I need something rough!";
-    private const string StuckFail = "Oof! I stopped waaay too soon. The bumpy part needs to be closer to my igloo, not back here!";
+    private const string OvershootFail = "Too fast! Smooth ice did not slow me down. Try rough gravel near my igloo.";
+    private const string StuckFail = "I stopped too soon! Move the gravel closer to my igloo.";
     private const string TeachingBody = "Friction happens when two things rub against each other. Rough stuff like gravel has LOTS of friction, so it grabs Pip and slows him down. Smooth ice has almost none — that's why he keeps sliding and sliding!";
+    private const string CompletionMessage = "You did it! The rough gravel made friction and slowed me down right at my igloo!";
+    private const string NextLevelPrompt = "Hmm... but what if I need to jump a big gap to get home? Maybe starting higher could help me fly farther!";
 
     private readonly Slot[] slots = new Slot[4];
 
@@ -83,7 +85,6 @@ public class Level2FrictionController : MonoBehaviour
     private float homeZoneTimer;
     private bool hasStarted;
     private float applyStartingVelocityUntil;
-    private bool showedIceCue;
     private bool showedGravelCue;
     private bool trayCardsWired;
     private Coroutine cueRoutine;
@@ -600,7 +601,6 @@ public class Level2FrictionController : MonoBehaviour
 
         state = LevelState.Sliding;
         hasStarted = true;
-        showedIceCue = false;
         showedGravelCue = false;
         stuckTimer = 0f;
         homeZoneTimer = 0f;
@@ -690,12 +690,12 @@ public class Level2FrictionController : MonoBehaviour
             "Pip made it home!",
             new[]
             {
-                "Rough ground slows things down — that's friction!",
-                "Put the brakes where you want to stop"
+                "Rough gravel creates friction",
+                "Put gravel where you want to stop"
             },
             null,
-            HomeCue,
-            "");
+            CompletionMessage,
+            NextLevelPrompt);
     }
 
     private void CompleteFail(string message)

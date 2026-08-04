@@ -1749,11 +1749,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DialogueManager
   messages:
-  - 'Hi! I''m Pip!
-
-
-    I got lost again! The higher I start, the farther I fly — can you launch me
-    back to my igloo?'
+  - "Hi! I'm Pip!\n\nI got lost again! The higher I start, the farther I fly \u2014
+    can you launch me back to my igloo?"
   advanceButtonLabel: Let's go!
   showOnlyFirstMessage: 1
   dialogueBox: {fileID: 0}
@@ -1762,7 +1759,7 @@ MonoBehaviour:
   advanceButtonText: {fileID: 0}
   buildDialogueBoxIfMissing: 1
   speakerIconSprite: {fileID: 8935773784369645873, guid: af4e6254fa4e0488795b3b556c9b6055, type: 3}
-  introDialogueAudio: {fileID: 8300000, guid: c65aa3e63817546b1bb718cdc5674565, type: 3}
+  introDialogueAudio: {fileID: 8300000, guid: dce9a2323e0be4804a9d699fae9990d2, type: 3}
   introDialogueAudioVolume: 1
   slideCueScreenOffset: {x: 0, y: 125}
   slideCueSize: {x: 430, y: 112}
@@ -1868,9 +1865,9 @@ MonoBehaviour:
   gravityDescription: Gravity is an invisible force that pulls everything toward
     the ground. The steeper the hill, the more gravity speeds you up!
   gravityLabel: Gravity pulls Pip down the hill
-  animationStepAudio: {fileID: 8300000, guid: e7317cbb6b50040cfb08009a7def00a3, type: 3}
+  animationStepAudio: {fileID: 8300000, guid: 8919f8b4d6d7e4b668968d867ff379d5, type: 3}
   animationStepAudioVolume: 1
-  completionPromptAudio: {fileID: 8300000, guid: 2b4c27c9e388e4ae8890c17071682ae0, type: 3}
+  completionPromptAudio: {fileID: 8300000, guid: 807e573e3715147a6ae590ecbe2dd9af, type: 3}
   completionPromptAudioVolume: 1
 --- !u!114 &331696416793651560 stripped
 MonoBehaviour:
@@ -1923,6 +1920,7 @@ MonoBehaviour:
   uiLabelColor: {r: 1, g: 1, b: 1, a: 1}
   potentialEnergyBackgroundColor: {r: 1, g: 1, b: 1, a: 0.25}
   potentialEnergyFillColor: {r: 0.25, g: 0.85, b: 1, a: 0.95}
+  interactionHintText: Drag Pip or move the slider
   useCustomGroundY: 0
   customGroundY: 0
   landingDetectionDelay: 0.25

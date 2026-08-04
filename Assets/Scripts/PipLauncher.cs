@@ -46,9 +46,11 @@ public class PipLauncher : MonoBehaviour
     public Color uiLabelColor = Color.white;
     public Color potentialEnergyBackgroundColor = new Color(1f, 1f, 1f, 0.25f);
     public Color potentialEnergyFillColor = new Color(0.25f, 0.85f, 1f, 0.95f);
+    public string interactionHintText = "Drag Pip or move the slider";
 
     private Text heightLabel;
     private Text potentialEnergyLabel;
+    private Text interactionHintLabel;
     private Image potentialEnergyFill;
     private RectTransform potentialEnergyFillRect;
     private bool heightEnergyUiCreated;
@@ -1042,7 +1044,7 @@ public class PipLauncher : MonoBehaviour
 
     private Collider2D FindIglooColliderByName()
     {
-        Collider2D[] colliders = FindObjectsOfType<Collider2D>();
+        Collider2D[] colliders = FindObjectsByType<Collider2D>(FindObjectsSortMode.None);
         foreach (Collider2D candidate in colliders)
         {
             if (candidate != pipCollider && ColliderNameContainsIgloo(candidate))
@@ -1284,6 +1286,18 @@ public class PipLauncher : MonoBehaviour
         potentialEnergyLabel.rectTransform.sizeDelta = new Vector2(potentialEnergyBarSize.x + 60f, 32f);
         potentialEnergyLabel.rectTransform.anchoredPosition = barRect.anchoredPosition +
             new Vector2(0f, potentialEnergyBarSize.y * 0.5f + 24f);
+
+        interactionHintLabel = CreateUiLabel(
+            "PipInteractionHint",
+            parent,
+            sliderRect,
+            interactionHintText,
+            TextAnchor.MiddleCenter);
+        interactionHintLabel.rectTransform.sizeDelta = new Vector2(310f, 32f);
+        interactionHintLabel.rectTransform.anchoredPosition = sliderPos + new Vector2(0f, 48f);
+        interactionHintLabel.fontSize = 18;
+        interactionHintLabel.fontStyle = FontStyle.Bold;
+        interactionHintLabel.color = new Color(1f, 1f, 1f, 0.92f);
 
         heightEnergyUiCreated = true;
         SyncPotentialEnergyBar();
