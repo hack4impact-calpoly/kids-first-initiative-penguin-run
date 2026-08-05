@@ -73,4 +73,19 @@ public sealed class PenguinLevelProgressServiceTests
         Assert.That(PenguinLevelProgressService.IsLevelUnlocked(2), Is.True);
         Assert.That(PenguinLevelProgressService.GetNextIncompleteLevel(), Is.EqualTo(2));
     }
+
+    [Test]
+    public void CompleteGameSignalsOnceAndPreservesCompletedLevels()
+    {
+        int completionSignals = 0;
+        PenguinLevelProgressService.GameCompleted += () => completionSignals++;
+        PenguinLevelProgressService.CompleteLevel(1);
+        PenguinLevelProgressService.CompleteLevel(2);
+        PenguinLevelProgressService.CompleteLevel(3);
+
+        Assert.That(PenguinLevelProgressService.CompleteGame(), Is.True);
+        Assert.That(PenguinLevelProgressService.CompleteGame(), Is.False);
+        Assert.That(completionSignals, Is.EqualTo(1));
+        Assert.That(PenguinLevelProgressService.GetCompletedLevels(), Is.EqualTo(new[] { 1, 2, 3 }));
+    }
 }

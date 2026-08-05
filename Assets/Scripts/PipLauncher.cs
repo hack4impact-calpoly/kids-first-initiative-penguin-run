@@ -504,7 +504,7 @@ public class PipLauncher : MonoBehaviour
         LevelVictoryPopup popup = FindFirstObjectByType<LevelVictoryPopup>();
         if (popup != null)
         {
-            popup.SetFinalActionAsText(true, "Take the quiz");
+            popup.SetFinalActionAsGameCompletion(true, "Take the quiz");
             popup.SetConceptStep(conceptTitle, conceptDescription, conceptLabel);
             popup.SetConceptAnimationVisible(showCompletionAnimation);
             popup.Show(nextLevelSceneName, completionTitle, completionLearnedItems, null, completionMessage, nextLevelPrompt);

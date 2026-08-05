@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -35,13 +36,14 @@ public class LevelVictoryPopup : MonoBehaviour
     [SerializeField] private bool showGravityDemo = true;
 
     [Header("Final Action")]
-    [Tooltip("When on, the final 'Next Level' button is shown as plain, non-interactive text (e.g. 'Take the quiz').")]
-    [SerializeField] private bool finalActionIsText = false;
+    [Tooltip("When on, the final button reports game completion to the website instead of loading another Unity scene.")]
+    [FormerlySerializedAs("finalActionIsText")]
+    [SerializeField] private bool finalActionCompletesGame = false;
     [SerializeField] private string finalActionText = "Take the quiz";
 
-    public void SetFinalActionAsText(bool isText, string text = null)
+    public void SetFinalActionAsGameCompletion(bool completesGame, string text = null)
     {
-        finalActionIsText = isText;
+        finalActionCompletesGame = completesGame;
         if (!string.IsNullOrEmpty(text))
         {
             finalActionText = text;
@@ -146,6 +148,7 @@ public class LevelVictoryPopup : MonoBehaviour
     private string nextSceneName;
     private int currentStep;
     private float animationStartTime;
+    private bool completionRequested;
     private Sprite generatedStarSprite;
     private Sprite generatedDownArrowSprite;
     private Sprite generatedSlopeSprite;
@@ -212,6 +215,7 @@ public class LevelVictoryPopup : MonoBehaviour
         nextButtonIcon.sprite = nextIconSprite;
         nextButtonIcon.enabled = nextIconSprite != null;
 
+        completionRequested = false;
         currentStep = LearnedStep;
         ApplyStep();
         popupGroup.SetActive(true);
@@ -681,7 +685,7 @@ public class LevelVictoryPopup : MonoBehaviour
         PlayCurrentStepAudio();
 
         bool isDialogueStep = currentStep == DialogueStep;
-        bool quizFinal = isDialogueStep && finalActionIsText;
+        bool quizFinal = isDialogueStep && finalActionCompletesGame;
         if (replayButtonObject != null)
         {
             replayButtonObject.SetActive(isDialogueStep);
@@ -700,11 +704,10 @@ public class LevelVictoryPopup : MonoBehaviour
                 fill.sizeDelta = isDialogueStep ? new Vector2(337f, 84f) : new Vector2(242f, 78f);
             }
 
-            // In quiz mode the final action is plain text, not a button: hide the chrome and disable clicks.
             Image background = nextButtonObject.GetComponent<Image>();
             if (background != null)
             {
-                background.enabled = !quizFinal;
+                background.enabled = true;
             }
 
             if (fill != null)
@@ -712,13 +715,13 @@ public class LevelVictoryPopup : MonoBehaviour
                 Image fillImage = fill.GetComponent<Image>();
                 if (fillImage != null)
                 {
-                    fillImage.enabled = !quizFinal;
+                    fillImage.enabled = true;
                 }
             }
 
             if (nextButton != null)
             {
-                nextButton.interactable = !quizFinal;
+                nextButton.interactable = !completionRequested;
             }
         }
 
@@ -818,7 +821,34 @@ public class LevelVictoryPopup : MonoBehaviour
             return;
         }
 
+        if (finalActionCompletesGame)
+        {
+            RequestGameCompletion();
+            return;
+        }
+
         LoadNextLevel();
+    }
+
+    private void RequestGameCompletion()
+    {
+        if (completionRequested)
+            return;
+
+        completionRequested = true;
+        StopStepAudio();
+
+        if (nextButton != null)
+        {
+            nextButton.interactable = false;
+        }
+
+        if (nextButtonText != null)
+        {
+            nextButtonText.text = "Opening quiz...";
+        }
+
+        PenguinLevelProgressService.CompleteGame();
     }
 
     private void ReplayCurrentLevel()

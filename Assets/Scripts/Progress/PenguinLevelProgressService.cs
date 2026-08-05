@@ -10,16 +10,19 @@ public sealed class PenguinLevelProgressService : MonoBehaviour
 
     public static PenguinLevelProgressService Instance { get; private set; }
     public static event Action<int> LevelCompleted;
+    public static event Action GameCompleted;
 
     private PenguinLevelProgressSaveData saveData;
     private int lastBegunSceneHandle = int.MinValue;
     private bool initialized;
+    private bool gameCompletionPosted;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ResetStatics()
     {
         Instance = null;
         LevelCompleted = null;
+        GameCompleted = null;
     }
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
@@ -75,6 +78,11 @@ public sealed class PenguinLevelProgressService : MonoBehaviour
         return CompleteLevel(levelNumber);
     }
 
+    public static bool CompleteGame()
+    {
+        return EnsureInstance().CompleteGameInternal();
+    }
+
     public static bool IsLevelComplete(int levelNumber)
     {
         if (!ValidateLevel(levelNumber))
@@ -122,6 +130,7 @@ public sealed class PenguinLevelProgressService : MonoBehaviour
         PenguinLevelProgressService service = EnsureInstance();
         service.saveData = new PenguinLevelProgressSaveData();
         service.lastBegunSceneHandle = int.MinValue;
+        service.gameCompletionPosted = false;
         PlayerPrefs.DeleteKey(SaveKey);
         PlayerPrefs.Save();
     }
@@ -212,6 +221,25 @@ public sealed class PenguinLevelProgressService : MonoBehaviour
 
         LevelCompleted?.Invoke(levelNumber);
         PostProgress(record);
+        return true;
+    }
+
+    private bool CompleteGameInternal()
+    {
+        if (gameCompletionPosted)
+            return false;
+
+        gameCompletionPosted = true;
+        GameCompleted?.Invoke();
+
+        var completionPayload = new PenguinGameCompletionPayload
+        {
+            saveVersion = SaveVersion,
+            completedLevels = BuildCompletedLevels(),
+            gameCompleted = true
+        };
+
+        PenguinProgressWebBridge.Post(JsonUtility.ToJson(completionPayload));
         return true;
     }
 
@@ -351,4 +379,12 @@ public sealed class PenguinProgressCompletionPayload
     public int saveVersion;
     public int[] completedLevels;
     public int levelCompleted;
+}
+
+[Serializable]
+public sealed class PenguinGameCompletionPayload
+{
+    public int saveVersion;
+    public int[] completedLevels;
+    public bool gameCompleted;
 }
