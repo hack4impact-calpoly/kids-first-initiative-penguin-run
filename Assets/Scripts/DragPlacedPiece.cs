@@ -7,6 +7,12 @@ public class DragPlacedPiece : MonoBehaviour
     public Camera worldCamera;
     public bool snapOnRelease = true;
 
+    /// <summary>
+    /// The piece currently under the player's finger, or null. Exposed so guidance can react to a
+    /// drag in progress without every drag site having to notify it.
+    /// </summary>
+    public static DragPlacedPiece ActiveDrag { get; private set; }
+
     private Collider2D col;
     private Vector3 offset;
 
@@ -26,6 +32,7 @@ public class DragPlacedPiece : MonoBehaviour
             return;
         }
         if (col) col.enabled = false;
+        ActiveDrag = this;
 
         Vector3 mouseWorld = ScreenToWorld(eventData.position);
 
@@ -51,11 +58,21 @@ public class DragPlacedPiece : MonoBehaviour
         }
         if (col) col.enabled = true;
 
+        bool snapped = false;
         if (snapOnRelease)
         {
             var snap = GetComponent<SnapPiece>();
-            if (snap != null) snap.TrySnap();
+            if (snap != null) snapped = snap.TrySnap();
         }
+
+        if (ActiveDrag == this) ActiveDrag = null;
+        TrackPlacementGuidance.NotifyDragEnded(snapped);
+    }
+
+    private void OnDisable()
+    {
+        // A piece can be destroyed mid-drag; leaving a stale reference would freeze the guidance.
+        if (ActiveDrag == this) ActiveDrag = null;
     }
 
     private Vector3 ScreenToWorld(Vector2 screenPos)
