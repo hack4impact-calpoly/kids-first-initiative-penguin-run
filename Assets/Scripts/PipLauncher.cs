@@ -55,6 +55,35 @@ public class PipLauncher : MonoBehaviour
     private RectTransform potentialEnergyFillRect;
     private bool heightEnergyUiCreated;
 
+    [Header("Drag Guide Line")]
+    [Tooltip("Draws a dashed line along the ramp so children can see where Pip can be dragged. The drag rail is otherwise invisible, which made the interaction hard to discover.")]
+    public bool showDragGuideLine = true;
+
+    [Tooltip("Colour of the stretch above Pip - the height still available to him.")]
+    public Color dragGuideAheadColor = new Color(1f, 0.86f, 0.05f, 0.9f);
+
+    [Tooltip("Colour of the stretch below Pip - height already used.")]
+    public Color dragGuideBehindColor = new Color(1f, 1f, 1f, 0.28f);
+
+    public float dragGuideWidth = 0.55f;
+
+    [Tooltip("World length of one dash plus its gap. Smaller values give more, shorter dashes.")]
+    public float dragGuideDashPeriod = 2.4f;
+
+    [Tooltip("Dashes drift up the ramp to suggest which way to drag. Set to 0 for a still line.")]
+    public float dragGuideScrollSpeed = 0.25f;
+
+    [Tooltip("Seconds the guide takes to fade out once Pip launches.")]
+    public float dragGuideFadeSeconds = 0.3f;
+
+    public int dragGuideSortingOrder = -1;
+
+    private LineRenderer dragGuideLine;
+    private Material dragGuideMaterial;
+    private Texture2D dragGuideTexture;
+    private float dragGuideAlpha = 1f;
+    private float dragGuideScrollOffset;
+
     [Header("Launch")]
     public bool useCustomGroundY;
     public float customGroundY;
@@ -209,8 +238,24 @@ public class PipLauncher : MonoBehaviour
         ConfigureRigidbodyForAiming();
         CacheBubbleReferences();
         EnsureProgressBarExists();
+        EnsureDragGuideLine();
         HideEnergyBubble();
         HideResultMessage();
+    }
+
+    private void OnDestroy()
+    {
+        // The dash texture and its material are generated at runtime, so nothing else will collect
+        // them when the level unloads.
+        if (dragGuideMaterial != null)
+        {
+            Destroy(dragGuideMaterial);
+        }
+
+        if (dragGuideTexture != null)
+        {
+            Destroy(dragGuideTexture);
+        }
     }
 
     private void OnEnable()
@@ -269,6 +314,8 @@ public class PipLauncher : MonoBehaviour
             hideProgressBarBubbleAt = 0f;
             HideEnergyBubble();
         }
+
+        UpdateDragGuideLine();
     }
 
     private void UpdateFlightOrientation()
@@ -1148,6 +1195,185 @@ public class PipLauncher : MonoBehaviour
             SetPipPosition(lastRampPosition);
             UpdateProgressBarFromPip();
         }
+    }
+
+    /// <summary>
+    /// Builds the dashed guide that runs along Pip's drag rail.
+    /// </summary>
+    /// <remarks>
+    /// The rail is an EdgeCollider2D with no renderer, so before this the only clue that Pip could be
+    /// dragged at all was a small line of text. Children were reported to miss the interaction
+    /// entirely. Drawing the rail makes the control visible without explaining it in words, which
+    /// matters for readers who are still learning to read.
+    /// </remarks>
+    private void EnsureDragGuideLine()
+    {
+        if (!showDragGuideLine || dragGuideLine != null)
+        {
+            return;
+        }
+
+        GameObject guideObject = new GameObject("PipDragGuideLine");
+        guideObject.transform.SetParent(transform.parent, false);
+
+        dragGuideLine = guideObject.AddComponent<LineRenderer>();
+        dragGuideLine.useWorldSpace = true;
+        dragGuideLine.positionCount = 2;
+        dragGuideLine.numCapVertices = 4;
+        dragGuideLine.textureMode = LineTextureMode.Tile;
+        dragGuideLine.alignment = LineAlignment.View;
+        dragGuideLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
+        dragGuideLine.receiveShadows = false;
+        dragGuideLine.sortingOrder = dragGuideSortingOrder;
+
+        dragGuideMaterial = new Material(FindDragGuideShader());
+        dragGuideMaterial.mainTexture = CreateDashTexture();
+        dragGuideLine.material = dragGuideMaterial;
+
+        ApplyDragGuideWidth();
+    }
+
+    private static Shader FindDragGuideShader()
+    {
+        // The project renders through URP, but Sprites/Default still works for a LineRenderer and is
+        // always present. Prefer the URP unlit shader when it is available.
+        return Shader.Find("Universal Render Pipeline/Unlit")
+            ?? Shader.Find("Sprites/Default")
+            ?? Shader.Find("Unlit/Transparent");
+    }
+
+    /// <summary>
+    /// A one-pixel-tall strip, half opaque and half clear, repeated along the line to read as dashes.
+    /// Generated rather than imported so the guide needs no art asset.
+    /// </summary>
+    private Texture2D CreateDashTexture()
+    {
+        const int width = 16;
+        dragGuideTexture = new Texture2D(width, 1, TextureFormat.RGBA32, false)
+        {
+            wrapMode = TextureWrapMode.Repeat,
+            filterMode = FilterMode.Bilinear,
+            name = "PipDragGuideDash",
+        };
+
+        for (int x = 0; x < width; x++)
+        {
+            bool opaque = x < width / 2;
+            dragGuideTexture.SetPixel(x, 0, new Color(1f, 1f, 1f, opaque ? 1f : 0f));
+        }
+
+        dragGuideTexture.Apply();
+        return dragGuideTexture;
+    }
+
+    private void ApplyDragGuideWidth()
+    {
+        if (dragGuideLine == null)
+        {
+            return;
+        }
+
+        dragGuideLine.startWidth = dragGuideWidth;
+        dragGuideLine.endWidth = dragGuideWidth;
+    }
+
+    private void UpdateDragGuideLine()
+    {
+        if (dragGuideLine == null)
+        {
+            return;
+        }
+
+        if (!showDragGuideLine || !TryGetRampEndpoints(out Vector2 start, out Vector2 end))
+        {
+            dragGuideLine.enabled = false;
+            return;
+        }
+
+        // Once Pip is in the air the rail is no longer actionable, so the guide fades out rather than
+        // competing with the flight for attention.
+        float targetAlpha = hasLaunched ? 0f : 1f;
+        dragGuideAlpha = dragGuideFadeSeconds > 0f
+            ? Mathf.MoveTowards(dragGuideAlpha, targetAlpha, Time.deltaTime / dragGuideFadeSeconds)
+            : targetAlpha;
+
+        if (dragGuideAlpha <= 0.001f)
+        {
+            dragGuideLine.enabled = false;
+            return;
+        }
+
+        dragGuideLine.enabled = true;
+        ApplyDragGuideWidth();
+
+        Vector2 lowPoint = start.y <= end.y ? start : end;
+        Vector2 highPoint = start.y <= end.y ? end : start;
+
+        dragGuideLine.SetPosition(0, new Vector3(lowPoint.x, lowPoint.y, pipZ + 0.01f));
+        dragGuideLine.SetPosition(1, new Vector3(highPoint.x, highPoint.y, pipZ + 0.01f));
+
+        ApplyDragGuideColors();
+        ApplyDragGuideDashes(Vector2.Distance(lowPoint, highPoint));
+    }
+
+    /// <summary>
+    /// Splits the line at Pip so the stretch above him reads brighter than the stretch below.
+    /// The gradient is information, not decoration: it shows how much height, and therefore how much
+    /// potential energy, is still available.
+    /// </summary>
+    private void ApplyDragGuideColors()
+    {
+        float pipPercent = Mathf.Clamp01(GetRampHeightPercent());
+
+        Color behind = dragGuideBehindColor;
+        Color ahead = dragGuideAheadColor;
+        behind.a *= dragGuideAlpha;
+        ahead.a *= dragGuideAlpha;
+
+        // Two keys either side of Pip give a crisp handover rather than a long blend.
+        float lower = Mathf.Clamp01(pipPercent - 0.01f);
+        float upper = Mathf.Clamp01(pipPercent + 0.01f);
+
+        Gradient gradient = new Gradient();
+        gradient.SetKeys(
+            new[]
+            {
+                new GradientColorKey(behind, 0f),
+                new GradientColorKey(behind, lower),
+                new GradientColorKey(ahead, upper),
+                new GradientColorKey(ahead, 1f),
+            },
+            new[]
+            {
+                new GradientAlphaKey(behind.a, 0f),
+                new GradientAlphaKey(behind.a, lower),
+                new GradientAlphaKey(ahead.a, upper),
+                new GradientAlphaKey(ahead.a, 1f),
+            });
+
+        dragGuideLine.colorGradient = gradient;
+    }
+
+    private void ApplyDragGuideDashes(float rampLength)
+    {
+        if (dragGuideMaterial == null)
+        {
+            return;
+        }
+
+        float period = Mathf.Max(0.01f, dragGuideDashPeriod);
+        float tiling = Mathf.Max(1f, rampLength / period);
+
+        // Drifting the dashes up the ramp suggests the direction to drag. Held still while Pip is
+        // being dragged so the guide does not fight the child's own movement.
+        if (!isDragging && !hasLaunched && dragGuideScrollSpeed != 0f)
+        {
+            dragGuideScrollOffset -= Time.deltaTime * dragGuideScrollSpeed;
+            dragGuideScrollOffset %= 1f;
+        }
+
+        dragGuideMaterial.mainTextureScale = new Vector2(tiling, 1f);
+        dragGuideMaterial.mainTextureOffset = new Vector2(dragGuideScrollOffset, 0f);
     }
 
     private void EnsureProgressBarExists()
