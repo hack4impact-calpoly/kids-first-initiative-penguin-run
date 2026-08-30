@@ -61,8 +61,58 @@ public class TrackPlacementGuidance : MonoBehaviour
     private bool hasConnectedAPiece;
     private bool paletteGlowing;
 
+    /// <summary>
+    /// Creates the guidance object on any scene that has track pieces to place.
+    ///
+    /// This is a MonoBehaviour, so without something to attach it to it would never run — and
+    /// attaching it by hand would mean editing every track level's scene and remembering to do it
+    /// again for the next one. PipLauncher and PenguinLevelProgressService bootstrap themselves for
+    /// the same reason; this follows them.
+    /// </summary>
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void InitializeBootstrap()
+    {
+        SceneManager.sceneLoaded -= HandleSceneLoaded;
+        SceneManager.sceneLoaded += HandleSceneLoaded;
+        BootstrapForScene();
+    }
+
+    private static void HandleSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        BootstrapForScene();
+    }
+
+    private static void BootstrapForScene()
+    {
+        if (instance != null) return;
+
+        // Only levels a child builds a track on need this. Checking for the pieces themselves keeps
+        // it out of menus and the Potential Energy level without hard-coding scene names.
+        bool hasTrackPieces =
+            FindObjectsByType<PaletteItem>(FindObjectsInactive.Include, FindObjectsSortMode.None).Length > 0
+            || FindObjectsByType<SnapPiece>(FindObjectsInactive.Exclude, FindObjectsSortMode.None).Length > 0;
+
+        if (!hasTrackPieces) return;
+
+        new GameObject(nameof(TrackPlacementGuidance)).AddComponent<TrackPlacementGuidance>();
+    }
+
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+    private static void ResetStatics()
+    {
+        // Domain reload can be disabled in the editor, which would otherwise carry a destroyed
+        // instance across play sessions and stop the guidance ever appearing again.
+        instance = null;
+    }
+
     private void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
         instance = this;
         hasConnectedAPiece = !ignoreSavedProgress && HasSucceededBefore();
     }
