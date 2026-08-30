@@ -76,7 +76,8 @@ public class PipLauncher : MonoBehaviour
     [Tooltip("Seconds the guide takes to fade out once Pip launches.")]
     public float dragGuideFadeSeconds = 0.3f;
 
-    public int dragGuideSortingOrder = -1;
+    [Tooltip("Drawn this many orders above Pip, on Pip's own sorting layer. A bare low number puts the line behind the level art, where nobody can see it.")]
+    public int dragGuideSortingOffset = 1;
 
     private LineRenderer dragGuideLine;
     private Material dragGuideMaterial;
@@ -1224,21 +1225,45 @@ public class PipLauncher : MonoBehaviour
         dragGuideLine.alignment = LineAlignment.View;
         dragGuideLine.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
         dragGuideLine.receiveShadows = false;
-        dragGuideLine.sortingOrder = dragGuideSortingOrder;
+        // Sorting is taken from Pip rather than set to a fixed number. The first version used order
+        // -1 on the default layer, which put the line behind the level art — it was being drawn
+        // correctly and was simply never visible.
+        SpriteRenderer pipRenderer = GetComponentInChildren<SpriteRenderer>();
+        if (pipRenderer != null)
+        {
+            dragGuideLine.sortingLayerID = pipRenderer.sortingLayerID;
+            dragGuideLine.sortingOrder = pipRenderer.sortingOrder + dragGuideSortingOffset;
+        }
+        else
+        {
+            dragGuideLine.sortingOrder = dragGuideSortingOffset;
+        }
 
-        dragGuideMaterial = new Material(FindDragGuideShader());
+        dragGuideMaterial = new Material(FindDragGuideShader(pipRenderer));
         dragGuideMaterial.mainTexture = CreateDashTexture();
         dragGuideLine.material = dragGuideMaterial;
 
         ApplyDragGuideWidth();
     }
 
-    private static Shader FindDragGuideShader()
+    /// <summary>
+    /// Finds a shader that is certainly present in a player build.
+    /// </summary>
+    /// <remarks>
+    /// Shader.Find only returns shaders included in the build, and Unity strips any that no material
+    /// references. Relying on it alone works in the editor and can return null in WebGL, leaving an
+    /// invalid material and an invisible line. Borrowing the shader from a sprite already in the
+    /// scene cannot fail that way: if the sprite renders, its shader shipped.
+    /// </remarks>
+    private static Shader FindDragGuideShader(SpriteRenderer sceneSprite)
     {
-        // The project renders through URP, but Sprites/Default still works for a LineRenderer and is
-        // always present. Prefer the URP unlit shader when it is available.
-        return Shader.Find("Universal Render Pipeline/Unlit")
+        Shader borrowed = sceneSprite != null && sceneSprite.sharedMaterial != null
+            ? sceneSprite.sharedMaterial.shader
+            : null;
+
+        return borrowed
             ?? Shader.Find("Sprites/Default")
+            ?? Shader.Find("Universal Render Pipeline/Unlit")
             ?? Shader.Find("Unlit/Transparent");
     }
 

@@ -47,6 +47,9 @@ public class TrackPlacementGuidance : MonoBehaviour
     [Tooltip("Seconds between rebuilds of the snap point list while dragging.")]
     public float snapScanInterval = 0.15f;
 
+    [Tooltip("How far above its own track piece a connection glow sits. AttentionHighlight draws one order below the renderer it measures, so this needs to be at least 2 for the glow to land in front of the art.")]
+    public int snapGlowSortingOffset = 2;
+
     private static TrackPlacementGuidance instance;
 
     private readonly List<AttentionHighlight> paletteHighlights = new List<AttentionHighlight>();
@@ -296,7 +299,24 @@ public class TrackPlacementGuidance : MonoBehaviour
         SpriteRenderer renderer = marker.AddComponent<SpriteRenderer>();
         renderer.sprite = EnsureMarkerSprite();
         renderer.color = Color.clear;
-        renderer.sortingOrder = 0;
+
+        // AttentionHighlight draws its glow one order *below* the renderer it measures, so a marker
+        // at order 0 puts the glow at -1 — behind the level art, where it cannot be seen. Sit the
+        // marker above the piece it belongs to, on that piece's own sorting layer, so the glow still
+        // lands in front.
+        SpriteRenderer nearby = snapPoint.GetComponentInParent<SnapPiece>() != null
+            ? snapPoint.GetComponentInParent<SnapPiece>().GetComponentInChildren<SpriteRenderer>()
+            : null;
+
+        if (nearby != null)
+        {
+            renderer.sortingLayerID = nearby.sortingLayerID;
+            renderer.sortingOrder = nearby.sortingOrder + snapGlowSortingOffset;
+        }
+        else
+        {
+            renderer.sortingOrder = snapGlowSortingOffset;
+        }
 
         float radius = Mathf.Max(0.5f, snapPreviewMargin);
         marker.transform.localScale = new Vector3(radius, radius, 1f);
