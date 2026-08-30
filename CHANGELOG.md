@@ -1,5 +1,11 @@
 # **Penguin Run - Player Data Save Implementation Changelog**
 
+> **Historical record.** This describes the save system as built in April 2026, around
+> `EventService.cs` posting directly to `/api/events`. That component is no longer referenced by
+> anything — progress now flows through `PenguinProgressWebBridge` to the WebGL template. Read this
+> for how the work was done; read [`docs/level-progress.md`](./docs/level-progress.md) for what
+> actually runs today.
+
 **Date:** April 28, 2026
 
 ---
