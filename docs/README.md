@@ -23,6 +23,6 @@ LFS. Full requirements are in the [README](../README.md) at the root.
 ## A note on CHANGELOG.md
 
 The changelog at the repository root records an April save-system implementation built around
-`EventService.cs`. That component is **no longer referenced by anything**; progress now flows through
-`PenguinProgressWebBridge`. Read the changelog as history, and `level-progress.md` for what runs
-today.
+`EventService.cs`. That component is still attached in the menu scene but nothing invokes it;
+progress now flows through `PenguinProgressWebBridge`. Read the changelog as history, and
+`level-progress.md` for what runs today.

@@ -37,8 +37,17 @@ The website's side of this contract is `docs/game-progress-bridge.md` in
 
 ## Known gap
 
-`Assets/Scripts/EventService.cs` posts level completions directly to `/api/events` and is **not
-referenced by anything**. It predates `PenguinProgressWebBridge` and is dead code. The 362-line
-`CHANGELOG.md` at the repository root documents it in detail and never mentions the bridge that
-replaced it, which made the repository's most prominent document a description of a system that is
-no longer wired up. Treat that changelog as history; this file describes what actually runs.
+`Assets/Scripts/EventService.cs` posts level completions directly to `/api/events`. It predates
+`PenguinProgressWebBridge` and no longer does anything, but it is **not** simply dead code: the
+component is attached to a GameObject in `Penguin Run First Menu.unity` and is enabled. Nothing
+invokes its only public method — there is no C# caller and no UnityEvent wiring in that scene — so
+it sits there inert.
+
+Removing it means editing that scene as well as deleting the script. Deleting the script alone would
+leave a "Missing (Mono Script)" component behind. Worth doing, but as a change someone can open the
+editor and verify.
+
+The 362-line `CHANGELOG.md` at the repository root documents this component in detail and never
+mentions the bridge that replaced it, which made the repository's most prominent document describe a
+path that no longer carries anything. Treat that changelog as history; this file describes what
+actually runs.
